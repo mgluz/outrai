@@ -1884,16 +1884,23 @@ async function syncAtomsFromSheet(){
     if(!res.ok) return;
     const csv=await res.text();
     const rows=parseCSV(csv).filter(r=>r.length>1 && r.join('').trim()!=='');
-    rows.shift(); // cabeçalho
+    if(rows.length<2) return; // sem cabeçalho + dados → mantém embutido
+    // --- mapeamento por CABEÇALHO (não por posição): inserir/reordenar colunas é seguro ---
+    const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+    const H=rows.shift().map(norm);
+    const col=(...keys)=>H.findIndex(h=>keys.some(k=>h.includes(k)));
+    const ci={ processo:col('processo'), titulo:col('atomo','tarefa','titulo'), tag:col('tag'), req:col('requisito'), acoes:col('aco'), evals:col('eval') };
+    if(ci.processo<0){ console.warn('[outrai] Cabeçalho sem coluna "Processo" — leitura ao vivo abortada, mantendo dados embutidos. Cabeçalhos lidos:', H); return; }
+    const g=(r,i)=> (i>=0 ? (r[i]||'') : '');
     const sp=s=>String(s||'').split('|').map(x=>x.trim()).filter(Boolean);
     const atoms={}; const unmatched=new Set();
     for(const r of rows){
-      const label=(r[1]||'').trim();
+      const label=g(r,ci.processo).trim();
       const id=ID_BY_LABEL[label]; if(!id){ if(label) unmatched.add(label); continue; } // nome de processo não reconhecido → ignora
       (atoms[id]=atoms[id]||[]).push({
-        titulo:(r[2]||'').trim(),
-        tag:((r[3]||'').trim().toLowerCase()==='ia'?'ia':'humano'),
-        req:sp(r[4]), acoes:sp(r[5]), evals:sp(r[6])
+        titulo:g(r,ci.titulo).trim(),
+        tag:(g(r,ci.tag).trim().toLowerCase()==='ia'?'ia':'humano'),
+        req:sp(g(r,ci.req)), acoes:sp(g(r,ci.acoes)), evals:sp(g(r,ci.evals))
       });
     }
     if(unmatched.size) console.warn('[outrai] Linhas ignoradas — nome de Processo não bate com o app (confira grafia/acentos):', [...unmatched]);
