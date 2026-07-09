@@ -555,11 +555,23 @@
         ],
         [
           "metricas",
-          "Análise de Métricas"
+          "Product Analytics"
+        ],
+        [
+          "dataadvanced",
+          "Data Analytics Avançado"
+        ],
+        [
+          "heuristica",
+          "Avaliação Heurística"
         ],
         [
           "usabilidade",
-          "Teste de Usabilidade"
+          "Teste de Usabilidade de Solução Atual"
+        ],
+        [
+          "experts",
+          "Entrevista com Experts da Indústria"
         ]
       ]
     },
@@ -663,6 +675,10 @@
           "Interações / Animações / Ilustrações"
         ],
         [
+          "designsystem",
+          "Design System / Library"
+        ],
+        [
           "naming",
           "Naming"
         ],
@@ -686,8 +702,16 @@
           "Regras de Negócio / Detalhamento"
         ],
         [
+          "tagueamento",
+          "Plano de Tagueamento para Analytics"
+        ],
+        [
           "prototipo",
           "Prototipação"
+        ],
+        [
+          "usabnova",
+          "Teste de Usabilidade de Nova Solução"
         ]
       ]
     },
@@ -1123,10 +1147,43 @@
       "activities": []
     },
     "usabilidade": {
-      "description": "Método para aprofundar a usabilidade e percepção, com usuários reais utilizando o produto.",
+      "description": "Método para aprofundar a usabilidade e percepção, com usuários reais utilizando o produto atual.",
       "estimate": {
         "humanHours": 77.5,
         "aiHours": 48
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "dataadvanced": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "heuristica": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "experts": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
       },
       "internalReviewHours": 0,
       "requirements": [],
@@ -1353,6 +1410,17 @@
       "evals": [],
       "activities": []
     },
+    "designsystem": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
     "naming": {
       "description": "Definição do nome de um produto ou marca de uma empresa.",
       "estimate": {
@@ -1402,6 +1470,28 @@
       "estimate": {
         "humanHours": 40,
         "aiHours": 8
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "tagueamento": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "usabnova": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
       },
       "internalReviewHours": 0,
       "requirements": [],
@@ -2063,8 +2153,8 @@ function openProcDetail(id){
 }
 
 /* ---- Página de detalhe do processo (read-only): descrição + átomos + reqs + evals ----
-   Alcançada pela aba Processos (todos os 41 são clicáveis; processos com conteúdo aparecem em verde vivid, sem conteúdo em dim).
-   Voltar retorna à aba Processos; anterior/próximo percorre todos os 41 processos na ordem canônica. */
+   Alcançada pela aba Processos (todos os 47 são clicáveis; processos com conteúdo aparecem em verde vivid, sem conteúdo em dim).
+   Voltar retorna à aba Processos; anterior/próximo percorre todos os 47 processos na ordem canônica. */
 let PD_CURRENT=null;
 function procsWithContent(){
   const out=[];
@@ -2238,8 +2328,17 @@ function recommend(a){
     set('research','opt', true);
     set('jornada','opt');
   }
-  // Teste de Usabilidade: sempre desmarcado; recomendado só em redesigns de produto/feature (não em revisão estratégica)
+  // Product Analytics: marcado em projetos de produtos existentes (features ou produto inteiro)
+  set('metricas', a.preexist==='existente' ? 'on' : 'off');
+  // Data Analytics Avançado: nunca recomendado; def em grandes saltos de redesenho de produtos existentes
+  set('dataadvanced', 'off', a.preexist==='existente' && a.salto);
+  // Avaliação Heurística: marcada em projetos com descoberta (exceto pocket)
+  set('heuristica', a.hasRV ? 'on' : 'off');
+  // Teste de Usabilidade de Solução Atual: sempre desmarcado; def em redesigns de produto/feature (não revisão estratégica)
   set('usabilidade','off', a.preexist==='existente' && (a.scope==='produto'||a.scope==='feature') && a.cat!=='A');
+  // Entrevista com Experts: nunca recomendado; def em A, B, C
+  set('experts', 'off', ['A','B','C'].includes(a.cat));
+  set('poket', (a.cat==='E' && a.preexist==='existente') ? 'on' : 'off');
 
   // Definição
   if(a.hasRV && a.scope==='feature'){
@@ -2257,8 +2356,6 @@ function recommend(a){
     set('keyfeatures','opt'); set('backlog','opt'); set('kpis','opt');
   }
   set('docvisao', a.hasRV ? 'on' : 'off');
-  set('metricas', (a.preexist==='existente' && a.hasRV) ? 'on' : 'off');
-  set('poket', (a.cat==='E' && a.preexist==='existente') ? 'on' : 'off');
 
   // Estrutura
   set('arquitetura', O>=2?'on':'off');
@@ -2271,29 +2368,39 @@ function recommend(a){
   set('layouts', O>=3?'on':'off');
   set('admin', 'off', O>=3);
   set('interacoes', O>=3?'on':(O===2?'opt':'off'));
+  set('designsystem', 'off'); // será ajustado após overrides
   set('naming', a.branding?'on':'off');
   set('identidade', a.branding?'on':'off');
 
   // Delivery
   set('descricao', O>=3?'on':'off');
   set('regras', O>=3?'on':'off');
+  // Plano de Tagueamento para Analytics
+  if(a.cat==='C') set('tagueamento','on');
+  else if(a.cat==='D' && a.dev) set('tagueamento','on');
+  else if(a.cat==='D' && !a.dev) set('tagueamento','off',true);
+  else if(a.cat==='E' && a.preexist==='novo') set('tagueamento','on');
+  else if(['E2','E4','E5'].includes(a.code)) set('tagueamento','off',true);
+  else set('tagueamento','off');
   set('prototipo', O>=3?'on':(O===2?'opt':'off'));
+  // Teste de Usabilidade de Nova Solução: nunca recomendado; def em B, C, D, E
+  set('usabnova', 'off', ['B','C','D','E'].includes(a.cat));
 
   // Implementação
   ['techresearch','sysarch','infra','frontend','backend','doctec'].forEach(id=>set(id, a.dev?'on':'off'));
+  // Technical Research: def em projetos de design (C, D, E) sem dev
+  if(!a.dev && ['C','D','E'].includes(a.cat)) set('techresearch','off',true);
 
   // Projetos de funcionalidade específica / incremento pontual (scope feature):
   // descoberta enxuta (só Descoberta Pocket; usabilidade pedindo revisão) e poda de processos estruturais.
   if(a.scope==='feature'){
-    // Descoberta em features: no máximo Descoberta Pocket, e só quando há descoberta a fazer.
-    // Single feature bem definida (hasRV falso, não-multifeature) → nada de descoberta.
     const isMultiFeat = a.multifeat || a.code==='E5' || a.code==='E6';
     const featDiscovery = isMultiFeat || a.hasRV;
     set('poket', featDiscovery ? 'on' : 'off');
-    ['imersao','generativas','benchmarking','research','jornada','metricas'].forEach(id=>set(id,'off'));
-    set('usabilidade','off', featDiscovery); // "definição necessária" só quando há descoberta
-    // não se aplicam a features: arquitetura, lista de telas, arquitetura de sistema, infra/deploy,
-    // regras de negócio, ux writing e painel admin
+    // Mata descoberta completa; Product Analytics sobrevive para features de produtos existentes
+    ['imersao','generativas','benchmarking','research','jornada','heuristica'].forEach(id=>set(id,'off'));
+    if(a.preexist!=='existente') set('metricas','off');
+    set('usabilidade','off', featDiscovery);
     ['arquitetura','telas','sysarch','infra','regras','uxwriting','admin'].forEach(id=>set(id,'off'));
   }
 
@@ -2301,12 +2408,16 @@ function recommend(a){
   const ov = TYPE_OVERRIDES[a.code];
   if(ov) Object.keys(ov).forEach(id=>{ if(r[id]) r[id].state=ov[id]; else r[id]={state:ov[id],def:false}; });
 
+  // Design System / Library: depende do estado final de layouts e happypath (após overrides)
+  if(r.layouts && r.layouts.state==='on') set('designsystem','on');
+  else if(r.happypath && r.happypath.state==='on') set('designsystem','off',true);
+
   return r;
 }
 const TYPE_OVERRIDES = {
-  A3: { keyfeatures:'on' },                                  // Estratégia de Produto
+  A3: { keyfeatures:'on' },
   B3: { keyfeatures:'on', backlog:'on', arquitetura:'on', cardsort:'on', userflows:'on',
-        wireframes:'on', telas:'on', concept:'off', happypath:'on', prototipo:'on' },  // Business Design
+        wireframes:'on', telas:'on', concept:'off', happypath:'on', prototipo:'on' },
 };
 
 /* ============================================================
