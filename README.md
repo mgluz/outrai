@@ -1,4 +1,4 @@
-# outrai scoping · manual da V1
+# outrai · Manual da V1
 
 *Aplicação de escopo e processos de projeto. Documento de referência da versão 1.*
 
@@ -24,9 +24,9 @@ Uma ferramenta para tipificar um projeto, ver os processos envolvidos, suas esti
 |---|---|
 | **Wizard** | Responde-se um funil de perguntas e ele classifica o projeto em um dos 25 tipos, recomenda os processos, estima esforço e monta um roadmap. É o ponto de entrada para escopar um projeto novo. |
 | **Bundles** | Catálogo de referência dos 25 tipos de projeto (famílias A–E), cada um com um conjunto inicial de processos recomendados. Nome e família de cada tipo vêm da aba **Tipos** (ao vivo); os atributos que definem a recomendação ficam no código. |
-| **Processos** | Biblioteca de todos os 41 processos, por etapa, com descrição e os tempos de esforço (💪 humano / 🦾 IA), em horas e somente leitura. **Todos** os processos são clicáveis: os que têm detalhamento (átomos) aparecem em **verde vivo**; os que ainda não têm aparecem em **verde pálido**. Ambos abrem a Página do processo. |
+| **Processos** | Biblioteca de todos os 47 processos, por etapa, com descrição e os tempos de esforço (💪 humano / 🦾 IA), em horas e somente leitura. **Todos** os processos são clicáveis: os que têm detalhamento (átomos) aparecem em **verde vivo**; os que ainda não têm aparecem em **verde pálido**. Ambos abrem a Página do processo. |
 | **Reqs & Evals** | Navegação do detalhamento por etapa → processo → átomo. Cada átomo mostra Requisitos, Ações e Evals. Somente leitura — reflete a planilha. |
-| **Página do processo** | Não é uma aba: abre ao clicar no nome de qualquer processo na aba Processos. Mostra, numa página só, a descrição + todos os átomos com seus Requisitos/Ações/Evals (ou aviso de "sem conteúdo" se o processo ainda não tem átomos). Tem **Voltar**, um contador de posição (`N / 41`) e navegação **anterior/próximo** que percorre **todos os 41 processos** na ordem canônica (não apenas os que têm conteúdo). Os botões de anterior/próximo usam opacidade reduzida para processos sem conteúdo. |
+| **Página do processo** | Não é uma aba: abre ao clicar no nome de qualquer processo na aba Processos. Mostra, numa página só, a descrição + todos os átomos com seus Requisitos/Ações/Evals (ou aviso de "sem conteúdo" se o processo ainda não tem átomos). Tem **Voltar**, um contador de posição (`N / 47`) e navegação **anterior/próximo** que percorre **todos os 47 processos** na ordem canônica (não apenas os que têm conteúdo). Os botões de anterior/próximo usam opacidade reduzida para processos sem conteúdo. |
 
 ## Como preencher a planilha para aparecer no app
 
@@ -75,8 +75,8 @@ Fluxo de nova versão: (1) pedir a mudança no chat → (2) assistente modifica 
 3. Na aba Processos, confira que processos com conteúdo estão em verde vivo e sem conteúdo em verde pálido. Ambos devem ser clicáveis.
 4. Clique num processo com conteúdo → confira descrição, átomos, Requisitos/Ações/Evals.
 5. Clique num processo sem conteúdo → confira descrição e aviso de "sem conteúdo".
-6. Use **anterior/próximo** (deve percorrer todos os 41) e **Voltar**.
-7. Confira o contador de posição (`N / 41`) na navegação.
+6. Use **anterior/próximo** (deve percorrer todos os 47) e **Voltar**.
+7. Confira o contador de posição (`N / 47`) na navegação.
 8. Edite uma linha na planilha, recarregue o app, confirme que apareceu.
 
 ---
@@ -124,16 +124,16 @@ Há **dois caminhos** para o dado da planilha chegar na tela:
 | `syncAll()` | Orquestrador: roda os 3 syncs na ordem certa (Processos → Tipos → Átomos) e depois `runSyncDiagnostics()`. |
 | `runSyncDiagnostics()` | Cruza os ids usados pelo Wizard com os que existem na planilha; atualiza o selo. |
 | `procsWithContent()` | Lista processos que têm pelo menos 1 átomo. Usada para filtros e exports. |
-| `allProcs()` | Lista todos os 41 processos na ordem canônica (por fase), incluindo flag `hasContent`. Usada pela navegação prev/next da Página do processo. |
+| `allProcs()` | Lista todos os 47 processos na ordem canônica (por fase), incluindo flag `hasContent`. Usada pela navegação prev/next da Página do processo. |
 | `renderProcesses()` | Desenha a aba Processos com todos os nomes como links — classe `.bright` (verde vivo, tem átomos) ou `.dim` (verde pálido, sem átomos) — mais tempos somente-leitura. |
-| `renderProcPage(id)` | Renderiza a página de detalhe de um processo (descrição + átomos read-only), com navegação prev/next entre **todos os 41** processos. Mostra indicador de posição (`N / 41`). Processos sem conteúdo mostram aviso amigável. Botões prev/next para processos sem conteúdo são exibidos com opacidade reduzida. |
+| `renderProcPage(id)` | Renderiza a página de detalhe de um processo (descrição + átomos read-only), com navegação prev/next entre **todos os 47** processos. Mostra indicador de posição (`N / 47`). Processos sem conteúdo mostram aviso amigável. Botões prev/next para processos sem conteúdo são exibidos com opacidade reduzida. |
 | `render*()` | Demais funções que desenham cada aba a partir de `DATA` — tudo data-driven, nada hardcoded por processo. |
 | `window.storage` | Uso **opcional** (edições de estimativa e textos dos bundles). Não é essencial; o app funciona sem. |
 
 ## Esquema dos dados
 
 - `DATA.snapshotDate`: `"2026-07-09"` — ISO date do último snapshot embutido.
-- `DATA.phases`: `[{ id, name, procs: [[procId, label], ...] }]` — estrutura canônica das etapas e processos (41 processos).
+- `DATA.phases`: `[{ id, name, procs: [[procId, label], ...] }]` — estrutura canônica das etapas e processos (47 processos).
 - `DATA.detail[procId]`: `{ description, estimate:{ humanHours, aiHours }, internalReviewHours, requirements[], evals[], activities[] }` — descrição e tempos.
 - `DATA.atoms[procId]`: `[{ titulo, tag:'humano'|'ia', req[], acoes[], evals[] }]` — o detalhamento editado na planilha.
 - `DATA.families` / `DATA.types`: as 5 famílias (A–E) e os 25 tipos.
@@ -225,12 +225,32 @@ No preview do chat (ambiente Claude), o navegador bloqueia o `fetch` para o Shee
 
 ## Changelog
 
-### 2026-07-09 — Páginas de processo para todos os 41 + snapshot date
+### 2026-07-09b — 6 novos processos + regras de recomendação
 
-- Todos os 41 processos são navegáveis: a Página do processo abre para qualquer um, mesmo sem átomos preenchidos.
-- Navegação anterior/próximo percorre todos os 41 na ordem canônica.
+Total de processos: **47** (era 41).
+
+**Novos processos:**
+- **Avaliação Heurística** (`heuristica`, Descoberta) — ON em projetos com descoberta completa (hasRV), exceto features/pocket.
+- **Data Analytics Avançado** (`dataadvanced`, Descoberta) — nunca recomendado; def em grandes saltos de redesenho de existentes (salto + existente).
+- **Design System / Library** (`designsystem`, Visual) — ON quando Layouts ON; def quando Happy Path ON.
+- **Plano de Tagueamento para Analytics** (`tagueamento`, Delivery) — ON em C, D+dev, E novos; def em D sem dev, E2/E4/E5.
+- **Entrevista com Experts da Indústria** (`experts`, Descoberta) — nunca recomendado; def em A, B, C.
+- **Teste de Usabilidade de Nova Solução** (`usabnova`, Delivery) — nunca recomendado; def em B, C, D, E.
+
+**Renomeados:**
+- "Análise de Métricas" → **Product Analytics** (id `metricas` mantido).
+- "Teste de Usabilidade" → **Teste de Usabilidade de Solução Atual** (id `usabilidade` mantido).
+
+**Regras de recomendação alteradas:**
+- **Product Analytics**: agora ON para todos os produtos existentes (preexist=existente), independente de hasRV. Sobrevive ao bloco de features existentes.
+- **Technical Research**: def (definição necessária) em projetos de design C, D, E sem dev.
+
+### 2026-07-09 — Páginas de processo para todos os 47 + snapshot date
+
+- Todos os 47 processos são navegáveis: a Página do processo abre para qualquer um, mesmo sem átomos preenchidos.
+- Navegação anterior/próximo percorre todos os 47 na ordem canônica.
 - Na aba Processos, processos com conteúdo aparecem em verde vivo (`.bright`); sem conteúdo em verde pálido (`.dim`). Ambos clicáveis.
-- Contador de posição (`N / 41`) na navegação da Página do processo.
+- Contador de posição (`N / 47`) na navegação da Página do processo.
 - `snapshotDate` adicionado ao `#app-data`, exibido no selo de sincronia.
 - Funções adicionadas: `allProcs()`.
 
