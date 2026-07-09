@@ -1,4 +1,4 @@
-# outrai scoping · Manual da V1
+# outrai scoping · manual da V1
 
 *Aplicação de escopo e processos de projeto. Documento de referência da versão 1.*
 
