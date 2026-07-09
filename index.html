@@ -148,8 +148,17 @@
   .proc.disabled{opacity:.4;cursor:not-allowed;}
   .proc.disabled:hover{background:transparent;}
   .qmark{width:15px;height:15px;border-radius:50%;border:1px solid var(--line-strong);color:var(--muted);
-    font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:help;flex:none;}
+    font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:help;flex:none;position:relative;}
   .qmark:hover{border-color:var(--accent);color:var(--accent);}
+  .qmark-tip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+    background:var(--card);border:1px solid var(--line-strong);border-radius:10px;padding:10px 14px;
+    font-size:12.5px;font-weight:400;line-height:1.45;color:var(--ink-soft);
+    width:max-content;max-width:320px;white-space:normal;text-align:left;
+    box-shadow:0 8px 24px -8px rgba(0,0,0,.6);z-index:80;pointer-events:none;
+    animation:qfade .12s ease;}
+  .qmark-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+    border:6px solid transparent;border-top-color:var(--line-strong);}
+  @keyframes qfade{from{opacity:0;transform:translateX(-50%) translateY(4px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
   /* ---------- processos (aba) ---------- */
   .proc-phase{margin-bottom:30px;}
   .proc-phase-name{font-family:"JetBrains Mono";font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
@@ -2486,7 +2495,7 @@ function renderChecklist(rec, state, key){
       const flags=[];
       if(!on && rec_) flags.push('<span class="tiny rec">definição necessária</span>');
       const cls = (on?'on':(rec_?'off rec':'off')) + (dis?' disabled':'');
-      const q = PROC_DESC[id] ? `<span class="qmark" title="${esc(PROC_DESC[id])}">?</span>` : '';
+      const q = PROC_DESC[id] ? `<span class="qmark" data-desc="${escAll(PROC_DESC[id])}">?</span>` : '';
       html += `<div class="proc ${cls}" data-key="${key}" data-id="${id}">
         <span class="dot"></span><span class="label">${label}</span>${q}
         <span class="flags">${flags.join('')}</span></div>`;
@@ -2495,10 +2504,25 @@ function renderChecklist(rec, state, key){
   });
   return html;
 }
+function toggleQmarkTip(el){
+  const existing=el.querySelector('.qmark-tip');
+  // close any other open tips
+  document.querySelectorAll('.qmark-tip').forEach(t=>t.remove());
+  if(existing) return; // was open, now closed
+  const desc=el.dataset.desc; if(!desc) return;
+  const tip=document.createElement('span');
+  tip.className='qmark-tip'; tip.textContent=desc;
+  el.appendChild(tip);
+  // close on next click anywhere
+  setTimeout(()=>{
+    const close=()=>{ tip.remove(); document.removeEventListener('click',close,true); };
+    document.addEventListener('click',close,true);
+  },0);
+}
 function bindChecklist(root){
   root.querySelectorAll('.proc').forEach(el=>{
     el.addEventListener('click',(ev)=>{
-      if(ev.target.classList.contains('qmark')) return;
+      if(ev.target.closest('.qmark')){ toggleQmarkTip(ev.target.closest('.qmark')); return; }
       if(el.classList.contains('disabled')) return;
       const k=el.dataset.key, id=el.dataset.id;
       const nowOn = !userState[k][id];
