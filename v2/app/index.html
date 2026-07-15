@@ -80,8 +80,6 @@
 
   .view{display:none;padding:34px 0 90px;}
   .view.active{display:block;}
-
-  /* ---------- foundations ---------- */
   .found-selector{display:flex;gap:16px;align-items:end;margin-bottom:28px;flex-wrap:wrap;}
   .found-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;display:block;}
   .found-select{background:var(--card);color:var(--ink);border:1px solid var(--line-strong);border-radius:9px;padding:9px 14px;font-family:var(--sans);font-size:14px;min-width:200px;cursor:pointer;}
@@ -172,8 +170,17 @@
   .proc.disabled{opacity:.4;cursor:not-allowed;}
   .proc.disabled:hover{background:transparent;}
   .qmark{width:15px;height:15px;border-radius:50%;border:1px solid var(--line-strong);color:var(--muted);
-    font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:help;flex:none;}
+    font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:help;flex:none;position:relative;}
   .qmark:hover{border-color:var(--accent);color:var(--accent);}
+  .qmark-tip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+    background:var(--card);border:1px solid var(--line-strong);border-radius:10px;padding:10px 14px;
+    font-size:12.5px;font-weight:400;line-height:1.45;color:var(--ink-soft);
+    width:max-content;max-width:320px;white-space:normal;text-align:left;
+    box-shadow:0 8px 24px -8px rgba(0,0,0,.6);z-index:80;pointer-events:none;
+    animation:qfade .12s ease;}
+  .qmark-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+    border:6px solid transparent;border-top-color:var(--line-strong);}
+  @keyframes qfade{from{opacity:0;transform:translateX(-50%) translateY(4px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
   /* ---------- processos (aba) ---------- */
   .proc-phase{margin-bottom:30px;}
   .proc-phase-name{font-family:"JetBrains Mono";font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
@@ -201,6 +208,9 @@
   .est-inputs input.est-ai{background:var(--ai-bg);}
   .est-inputs input:focus{border-color:var(--accent);outline:none;}
   .est-inputs input::placeholder{color:var(--off);}
+  .est-inputs .est-val{width:64px;text-align:center;padding:7px 6px;border-radius:8px;border:1px solid var(--line);font-family:"JetBrains Mono";font-size:13px;font-weight:600;}
+  .est-inputs .est-val.h{background:var(--human-bg);color:var(--human-ink);}
+  .est-inputs .est-val.ai{background:var(--ai-bg);color:var(--ai-ink);}
   .emoji{cursor:help;}
   /* totais no card */
   .tot{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;}
@@ -223,6 +233,7 @@
   .rm-top h2{font-family:"Public Sans";font-size:24px;letter-spacing:-.01em;margin:0;}
   .rm-sub{color:var(--muted);font-size:14px;margin-top:2px;}
   .rm-close{background:none;border:0;font-size:20px;color:var(--muted);cursor:pointer;line-height:1;padding:4px;}
+  #export-json{width:100%;height:300px;font-family:var(--mono);font-size:12px;line-height:1.5;background:var(--dark-3);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;resize:vertical;}
   .rm-meta{font-size:13px;color:var(--ink-soft);line-height:1.5;background:var(--paper);border-radius:10px;padding:12px 15px;margin:16px 0 24px;}
   .rm-chart{margin-bottom:22px;}
   .rm-row-head{display:flex;align-items:baseline;gap:10px;margin-bottom:7px;}
@@ -252,8 +263,19 @@
   .bundle-est .be-unit{font-family:"JetBrains Mono";font-size:10.5px;color:var(--off);white-space:nowrap;}
   .bundle-est .be-road{display:inline-flex;align-items:center;color:var(--accent);cursor:pointer;}
   .bundle-est .be-road:hover{opacity:.6;}
-  .proc-open{cursor:pointer;border-bottom:1px dotted var(--line-strong);}
+  .proc-open{cursor:pointer;border-bottom:1px dotted var(--line-strong);transition:color .12s,border-color .12s;}
   .proc-open:hover{color:var(--accent);border-bottom-color:var(--accent);}
+  .proc-open.bright{color:var(--accent);border-bottom-color:var(--accent);}
+  .proc-open.bright:hover{opacity:.85;}
+  .proc-open.dim{color:rgba(77,245,160,.35);border-bottom-color:transparent;}
+  .proc-open.dim:hover{color:rgba(77,245,160,.55);border-bottom-color:rgba(77,245,160,.35);}
+
+  /* selo de sincronia (canto) — torna visível se o app está lendo a planilha ao vivo */
+  .sync-badge{position:fixed;right:14px;bottom:14px;z-index:60;font-family:"JetBrains Mono";font-size:11px;
+    padding:6px 11px;border-radius:999px;border:1px solid var(--line-strong);background:var(--card);color:var(--muted);cursor:default;}
+  .sync-badge.ok{color:var(--accent);border-color:rgba(77,245,160,.45);}
+  .sync-badge.embed{color:#e6b800;border-color:rgba(230,184,0,.45);}
+  .sync-badge.warn{color:#ff6b6b;border-color:rgba(255,107,107,.55);}
   .pd-card{background:var(--card);border-radius:18px;max-width:720px;width:100%;padding:30px 34px 34px;box-shadow:0 20px 60px -20px rgba(27,26,38,.5);}
   .pd-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px;}
   .pd-top h2{font-family:"Public Sans";font-size:23px;letter-spacing:-.01em;margin:0;}
@@ -263,6 +285,43 @@
   .pd-sec{border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
   .pd-sec h3{font-family:"Public Sans";font-size:15px;margin:0 0 8px;}
   .pd-empty{color:var(--off);font-size:13px;font-style:italic;}
+  .pd-list{margin:0;padding-left:18px;}
+  .pd-list li{margin-bottom:6px;font-size:14px;color:var(--ink-soft);line-height:1.5;}
+  .pd-acts{display:flex;flex-direction:column;gap:10px;}
+  .pd-act{border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+  .pd-act-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;}
+  .pd-act-name{font-weight:600;font-size:14px;}
+  .pd-act-time{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;}
+  .pd-sub{margin-top:6px;}
+  .pd-sub>span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .pd-note{margin-top:8px;font-size:12px;color:var(--muted);}
+
+  /* página de detalhe de processo (read-only) — reaproveita .pd-eyebrow/.pd-desc/.rae/.rae-title/.pd-list/.atom-tag */
+  .pd-nav-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px;flex-wrap:wrap;}
+  .pd-back{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line-strong);border-radius:9px;
+    padding:9px 15px;font-family:"Public Sans";font-weight:600;font-size:13.5px;color:var(--ink-soft);transition:.15s;}
+  .pd-back:hover{border-color:var(--ink);color:var(--ink);}
+  .pd-linear{display:flex;gap:8px;}
+  .pd-step{display:inline-flex;align-items:center;gap:8px;max-width:240px;background:var(--card);border:1px solid var(--line-strong);
+    border-radius:9px;padding:9px 14px;font-family:"Public Sans";font-size:13px;color:var(--ink-soft);transition:.15s;}
+  .pd-step:hover:not(:disabled){border-color:var(--accent);color:var(--ink);}
+  .pd-step:disabled{opacity:.32;cursor:not-allowed;}
+  .pd-step .pd-step-dir{font-family:"JetBrains Mono";color:var(--accent);flex:none;font-size:13px;}
+  .pd-step:disabled .pd-step-dir{color:var(--off);}
+  .pd-step .pd-step-lab{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .pd-step.dim{opacity:.45;}
+  .pd-step.dim:hover:not(:disabled){opacity:.7;}
+  .pd-pos{font-family:"JetBrains Mono";font-size:11px;color:var(--off);white-space:nowrap;align-self:center;margin-right:4px;}
+  .pd-h1{font-family:"Public Sans";font-weight:800;font-size:27px;letter-spacing:-.01em;margin:2px 0 0;}
+  .pd-page .pd-desc{color:var(--ink-soft);font-size:15px;line-height:1.55;margin:12px 0 30px;max-width:720px;}
+  .pd-atoms{display:flex;flex-direction:column;gap:16px;}
+  .pd-atom{border:1px solid var(--line);border-radius:14px;background:rgba(244,244,238,.02);padding:22px 24px;}
+  .pd-atom-head{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+  .pd-atom-title{font-family:"Public Sans";font-weight:700;font-size:17px;color:var(--ink);flex:1;min-width:0;}
+  .pd-atom .atom-tag{cursor:default;}
+  .pd-atoms-empty{color:var(--off);font-size:14px;font-style:italic;padding:22px 0;}
+  .pd-nav-bottom{display:flex;justify-content:space-between;gap:12px;margin-top:36px;padding-top:22px;border-top:1px solid var(--line);}
+
   /* --- editor de átomos (requisitos / ações / evals) --- */
   .pd-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;font-family:"JetBrains Mono";font-size:11.5px;color:var(--muted);}
   .atom{border:1px solid var(--line);border-radius:12px;background:rgba(244,244,238,.02);overflow:hidden;}
@@ -283,8 +342,6 @@
   .re-proc-meta{font-family:"JetBrains Mono";font-size:11px;color:var(--muted);}
   .re-proc-desc{font-size:13.5px;color:var(--muted);line-height:1.5;margin:4px 0 20px;max-width:720px;}
   .re-atoms{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
-  .re-actions{display:flex;align-items:center;gap:12px;justify-content:flex-end;margin-bottom:20px;}
-  .re-actions-note{font-family:"JetBrains Mono";font-size:10.5px;color:var(--off);margin-right:auto;}
   .atom-title{flex:1;min-width:0;background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--ink);font-family:"Public Sans";font-weight:600;font-size:16px;padding:6px 2px;}
   .atom-title:focus{outline:none;border-bottom-color:var(--accent);}
   .atom-title::placeholder{color:var(--off);}
@@ -358,6 +415,29 @@
   .desc-list li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:2px;background:var(--accent);}
   .summary-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;}
 
+  /* ficha "abordagem de projeto" — ilha clara destacada sobre o tema escuro (TESTE, reversível) */
+  .ficha{
+    --card:#FFFFFF; --ink:#16151F; --ink-soft:#3A3850;
+    --muted:#6B6878; --off:#B0ABA1; --line:#E7E3DB; --line-strong:#CFC9BE;
+    --amber:#C88A16; --amber-soft:#FBF1DC;
+    --human-bg:#FCF6E1; --ai-bg:#EBF1FE; --human-ink:#B7791F; --ai-ink:#2563EB;
+    color:var(--ink);
+    box-shadow:0 26px 64px -28px rgba(0,0,0,.75), 0 0 0 1px rgba(0,0,0,.05);
+  }
+  .ficha .badge{background:rgba(20,20,20,.06);color:var(--muted);}
+  .ficha .badge.re{background:rgba(224,120,40,.16);color:var(--orange);}
+  .ficha .badge.dev{background:var(--accent-soft);color:var(--accent);}
+  .ficha .proc:hover{background:rgba(20,20,20,.04);}
+  .ficha .btn:not(.primary){background:rgba(20,20,20,.05);border-color:var(--line-strong);color:var(--ink-soft);}
+  .ficha .desc-list li::before{background:#1F9E77;}
+
+  /* layout: ficha à esquerda (~66%), lado direito vazio no desktop */
+  .ficha-layout{display:block;}
+  @media(min-width:840px){
+    .ficha-layout{display:flex;align-items:flex-start;}
+    .ficha-layout .ficha{flex:0 1 66%;max-width:66%;}
+  }
+
   @media(max-width:640px){
     .lede h1{font-size:24px;}
     .q-title{font-size:20px;}
@@ -368,6 +448,85 @@
   }
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
   @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+
+  /* ---------- sabatina ---------- */
+  .sab{max-width:720px;margin:0 auto;padding:0 0 90px;}
+  .sab-progress{display:flex;gap:4px;margin-bottom:28px;}
+  .sab-step{flex:1;height:4px;border-radius:2px;background:var(--line-strong);transition:.3s;}
+  .sab-step.done{background:var(--accent);}
+  .sab-step.cur{background:var(--accent);opacity:.5;}
+  .sab-step-labels{display:flex;justify-content:space-between;margin-bottom:6px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .sab-thread{display:flex;flex-direction:column;gap:16px;margin-bottom:24px;min-height:60px;}
+  .sab-bubble{border-radius:14px;padding:16px 20px;font-size:14.5px;line-height:1.6;max-width:95%;animation:sabFade .3s ease;}
+  @keyframes sabFade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .sab-bubble.ai{background:var(--ai-bg);border:1px solid rgba(77,245,160,.18);align-self:flex-start;color:var(--ink);}
+  .sab-bubble.human{background:var(--human-bg);border:1px solid rgba(232,228,154,.18);align-self:flex-end;color:var(--ink);}
+  .sab-bubble .step-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+  .sab-bubble.human .step-tag{color:var(--human-ink);}
+  .sab-input{margin-top:8px;}
+  .sab-input textarea{width:100%;min-height:90px;padding:14px 16px;border:1.5px solid var(--line-strong);border-radius:12px;background:var(--card);color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.55;resize:vertical;}
+  .sab-input textarea:focus{outline:none;border-color:var(--accent);}
+  .sab-input textarea::placeholder{color:var(--off);}
+  .sab-input-hint{font-size:12px;color:var(--muted);margin-top:6px;}
+  .sab-files{margin-top:12px;}
+  .sab-dropzone{border:1.5px dashed var(--line-strong);border-radius:12px;padding:18px;text-align:center;color:var(--muted);font-size:13px;cursor:pointer;transition:.15s;}
+  .sab-dropzone:hover{border-color:var(--accent);color:var(--ink);}
+  .sab-dropzone input{display:none;}
+  .sab-file-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .sab-file-chip{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;font-family:var(--mono);color:var(--ink-soft);}
+  .sab-file-chip button{background:none;border:0;color:var(--off);cursor:pointer;font-size:14px;padding:0 2px;}
+  .sab-file-chip button:hover{color:var(--orange);}
+  .sab-nav{display:flex;gap:12px;margin-top:22px;align-items:center;}
+  .sab-nav .spacer{flex:1;}
+  .sab-loading{display:flex;align-items:center;gap:10px;padding:16px 0;color:var(--muted);font-size:13px;font-family:var(--mono);animation:sabPulse 1.5s infinite;}
+  @keyframes sabPulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+  .sab-loading .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+
+  /* CSD matrix */
+  .sab-csd-intro{color:var(--ink-soft);font-size:14px;line-height:1.6;margin-bottom:22px;max-width:600px;}
+  .sab-csd-legend{display:flex;gap:18px;margin-bottom:20px;flex-wrap:wrap;}
+  .sab-csd-legend span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;display:flex;align-items:center;gap:6px;}
+  .sab-csd-legend .ck{width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;}
+  .sab-csd-legend .ck-c{background:rgba(77,245,160,.16);color:var(--accent);}
+  .sab-csd-legend .ck-s{background:rgba(232,228,154,.16);color:var(--cream);}
+  .sab-csd-legend .ck-d{background:rgba(224,120,40,.16);color:var(--orange);}
+  .sab-csd-list{display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
+  .sab-csd-item{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:12px;transition:.15s;}
+  .sab-csd-item:hover{border-color:var(--line-strong);}
+  .sab-csd-item .text{flex:1;font-size:14px;line-height:1.5;color:var(--ink-soft);}
+  .sab-csd-btns{display:flex;gap:6px;flex:none;}
+  .sab-csd-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line-strong);background:transparent;font-family:var(--mono);font-weight:700;font-size:13px;color:var(--muted);cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;}
+  .sab-csd-btn:hover{border-color:var(--ink);}
+  .sab-csd-btn.sel-c{background:rgba(77,245,160,.2);border-color:var(--accent);color:var(--accent);}
+  .sab-csd-btn.sel-s{background:rgba(232,228,154,.2);border-color:var(--cream);color:var(--cream);}
+  .sab-csd-btn.sel-d{background:rgba(224,120,40,.2);border-color:var(--orange);color:var(--orange);}
+
+  /* final report */
+  .sab-report{display:flex;flex-direction:column;gap:26px;}
+  .sab-report-section{border:1px solid var(--line);border-radius:14px;padding:20px 22px;background:var(--card);}
+  .sab-report-section h3{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+  .sab-report-section.gaps h3{color:var(--orange);}
+  .sab-csd-group{margin-bottom:16px;}
+  .sab-csd-group:last-child{margin-bottom:0;}
+  .sab-csd-group-title{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .sab-csd-group-title.cert{color:var(--accent);}
+  .sab-csd-group-title.sup{color:var(--cream);}
+  .sab-csd-group-title.duv{color:var(--orange);}
+  .sab-csd-group-title::after{content:"";flex:1;height:1px;background:var(--line);}
+  .sab-csd-group ul{list-style:none;padding:0;margin:0;}
+  .sab-csd-group li{padding:6px 0;font-size:13.5px;color:var(--ink-soft);line-height:1.5;border-bottom:1px solid var(--line);}
+  .sab-csd-group li:last-child{border-bottom:0;}
+  .sab-gap-item{padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.5;}
+  .sab-gap-item:last-child{border-bottom:0;}
+  .sab-gap-item .why{color:var(--muted);font-size:12.5px;margin-top:2px;}
+  .sab-rec-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .sab-rec-item:last-child{border-bottom:0;}
+  .sab-rec-item label{flex:1;cursor:pointer;}
+  .sab-rec-item .rec-label{font-size:14px;color:var(--ink);font-weight:600;}
+  .sab-rec-item .rec-why{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.4;}
+  .sab-rec-item input[type="checkbox"]{width:20px;height:20px;accent-color:var(--accent);flex:none;margin-top:2px;cursor:pointer;}
+  .sab-error{background:rgba(224,120,40,.12);border:1px solid var(--amber);border-radius:10px;padding:14px 16px;color:var(--ink-soft);font-size:13.5px;margin-bottom:16px;}
+  .sab-error button{margin-top:8px;font-size:12px;}
 </style>
 </head>
 <body>
@@ -381,7 +540,7 @@
       <button id="tab-wiz" class="active" onclick="setTab('wiz')">Wizard</button>
       <button id="tab-cat" onclick="setTab('cat')">Bundles</button>
       <button id="tab-proc" onclick="setTab('proc')">Processos</button>
-      <button id="tab-re" onclick="setTab('re')">Requisitos &amp; Evals</button>
+      <button id="tab-re" onclick="setTab('re')">Reqs &amp; Evals</button>
       <button id="tab-found" onclick="setTab('found')">Foundations</button>
     </div>
   </div>
@@ -424,13 +583,12 @@
     <div class="lede">
       <div class="eyebrow">Biblioteca</div>
       <h1>Todos os processos</h1>
-      <p>A lista completa de processos, organizados por etapa, com a descrição de cada um. É o vocabulário que alimenta as recomendações do funil e do catálogo.</p>
+      <p>A lista completa de processos, organizados por etapa, com a descrição de cada um. <span style="color:var(--accent)">Nomes em verde vivo</span> já têm detalhamento (átomos, requisitos e evals); <span style="color:rgba(77,245,160,.35)">nomes pálidos</span> ainda não. Clique em qualquer um para ver a página do processo.</p>
     </div>
     <div id="proc-list"></div>
   </div>
 </main>
 
-<!-- =============== REQUISITOS & EVALS =============== -->
 <main id="view-re" class="view">
   <div class="wrap">
     <div class="lede">
@@ -438,10 +596,29 @@
       <h1>Requisitos &amp; Evals</h1>
       <p>Cada processo é quebrado em <b>átomos</b> (tarefas). Cada átomo tem seus requisitos (entrada), ações (o trabalho) e evals (critérios de pronto). Escolha a etapa, abra um processo, abra um átomo.</p>
     </div>
-    <div class="re-actions"><span class="re-actions-note">edições salvas automaticamente neste artefato</span><button class="btn sm" onclick="exportAtomsJSON()">Exportar JSON</button></div>
+    <div class="pd-toolbar">
+      <span>Fonte: planilha do Google Sheets · somente leitura no app</span>
+      <button class="btn sm" onclick="exportAtomsMD()">Exportar .md</button>
+      <button class="btn sm" onclick="exportAtomsJSON()">Exportar .json</button>
+    </div>
     <div id="re-body"></div>
   </div>
 </main>
+
+<!-- =============== DETALHE DE PROCESSO (read-only) =============== -->
+<main id="view-pd" class="view">
+  <div class="wrap"><div id="pd-body"></div></div>
+</main>
+
+<!-- =============== SABATINA =============== -->
+<main id="view-sab" class="view">
+  <div class="wrap">
+    <div id="sab-header" class="lede"></div>
+    <div class="sab" id="sab-body"></div>
+  </div>
+</main>
+
+<div id="sync-badge" class="sync-badge" style="display:none"></div>
 
 <!-- =============== FOUNDATIONS =============== -->
 <main id="view-found" class="view">
@@ -452,18 +629,12 @@
       <p>Informações que sustentam as decisões — da organização ao projeto.</p>
     </div>
     <div id="found-selector" class="found-selector">
-      <label class="found-label">Organização</label>
-      <select id="found-org" class="found-select" onchange="onOrgChange()">
-        <option value="">Selecione...</option>
-      </select>
-      <label class="found-label">Produto</label>
-      <select id="found-prod" class="found-select" onchange="onProdChange()" disabled>
-        <option value="">Selecione...</option>
-      </select>
-      <label class="found-label">Projeto</label>
-      <select id="found-proj" class="found-select" onchange="onProjChange()" disabled>
-        <option value="">Selecione...</option>
-      </select>
+      <div><label class="found-label">Organização</label>
+      <select id="found-org" class="found-select" onchange="onOrgChange()"><option value="">Selecione...</option></select></div>
+      <div><label class="found-label">Produto</label>
+      <select id="found-prod" class="found-select" onchange="onProdChange()" disabled><option value="">Selecione...</option></select></div>
+      <div><label class="found-label">Projeto</label>
+      <select id="found-proj" class="found-select" onchange="onProjChange()" disabled><option value="">Selecione...</option></select></div>
     </div>
     <div id="found-nav" class="found-nav" style="display:none"></div>
     <div id="found-content" class="found-content"></div>
@@ -471,143 +642,1320 @@
 </main>
 
 <div id="roadmap-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeRoadmap()"></div>
+<div id="proc-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeProcDetail()"></div>
+<div id="export-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeExport()"></div>
 
+<script id="app-data" type="application/json">
+{
+  "snapshotDate": "2026-07-09",
+  "phases": [
+    {
+      "order": 1,
+      "id": "start",
+      "name": "Start",
+      "procs": [
+        [
+          "deb",
+          "Debriefing"
+        ],
+        [
+          "setup",
+          "Setup de Projeto"
+        ]
+      ]
+    },
+    {
+      "order": 2,
+      "id": "desc",
+      "name": "Descoberta",
+      "procs": [
+        [
+          "poket",
+          "Descoberta Pocket"
+        ],
+        [
+          "imersao",
+          "Imersão com Stakeholders"
+        ],
+        [
+          "generativas",
+          "Sessões Generativas"
+        ],
+        [
+          "benchmarking",
+          "Benchmarking"
+        ],
+        [
+          "research",
+          "User Research"
+        ],
+        [
+          "jornada",
+          "Mapeamento de Jornada"
+        ],
+        [
+          "metricas",
+          "Product Analytics"
+        ],
+        [
+          "dataadvanced",
+          "Data Analytics Avançado"
+        ],
+        [
+          "heuristica",
+          "Avaliação Heurística"
+        ],
+        [
+          "usabilidade",
+          "Teste de Usabilidade de Solução Atual"
+        ],
+        [
+          "experts",
+          "Entrevista com Experts da Indústria"
+        ]
+      ]
+    },
+    {
+      "order": 3,
+      "id": "def",
+      "name": "Definição",
+      "procs": [
+        [
+          "personas",
+          "User Personas"
+        ],
+        [
+          "journeys",
+          "User Journeys (to be)"
+        ],
+        [
+          "jtbd",
+          "Jobs to be Done"
+        ],
+        [
+          "uvp",
+          "Unique Value Proposition"
+        ],
+        [
+          "matriz",
+          "Matriz de Posicionamento"
+        ],
+        [
+          "keyfeatures",
+          "Key Features"
+        ],
+        [
+          "backlog",
+          "Product Backlog Priorizado"
+        ],
+        [
+          "kpis",
+          "KPIs / Outcomes Esperados"
+        ],
+        [
+          "docvisao",
+          "Documento de Visão"
+        ]
+      ]
+    },
+    {
+      "order": 4,
+      "id": "estrut",
+      "name": "Design da Estrutura",
+      "procs": [
+        [
+          "arquitetura",
+          "Mapa de Arquitetura"
+        ],
+        [
+          "cardsort",
+          "Labeling"
+        ],
+        [
+          "uxwriting",
+          "UX Writing"
+        ],
+        [
+          "userflows",
+          "User Flows"
+        ],
+        [
+          "wireframes",
+          "Wireframes"
+        ],
+        [
+          "telas",
+          "Lista de Telas"
+        ]
+      ]
+    },
+    {
+      "order": 5,
+      "id": "visual",
+      "name": "Design Visual / Interativo",
+      "procs": [
+        [
+          "concept",
+          "Concept Design"
+        ],
+        [
+          "happypath",
+          "Happy Path"
+        ],
+        [
+          "layouts",
+          "Layouts / Componentes (todos)"
+        ],
+        [
+          "admin",
+          "Design de Painel Admin"
+        ],
+        [
+          "interacoes",
+          "Interações / Animações / Ilustrações"
+        ],
+        [
+          "designsystem",
+          "Design System / Library"
+        ],
+        [
+          "naming",
+          "Naming"
+        ],
+        [
+          "identidade",
+          "Identidade Visual"
+        ]
+      ]
+    },
+    {
+      "order": 6,
+      "id": "delivery",
+      "name": "Delivery",
+      "procs": [
+        [
+          "descricao",
+          "Descrição Funcional de Telas"
+        ],
+        [
+          "regras",
+          "Regras de Negócio / Detalhamento"
+        ],
+        [
+          "tagueamento",
+          "Plano de Tagueamento para Analytics"
+        ],
+        [
+          "prototipo",
+          "Prototipação"
+        ],
+        [
+          "usabnova",
+          "Teste de Usabilidade de Nova Solução"
+        ]
+      ]
+    },
+    {
+      "order": 7,
+      "id": "impl",
+      "name": "Implementação",
+      "procs": [
+        [
+          "techresearch",
+          "Technical Research"
+        ],
+        [
+          "sysarch",
+          "System Architecture"
+        ],
+        [
+          "infra",
+          "Setup de Infraestrutura"
+        ],
+        [
+          "frontend",
+          "Front End"
+        ],
+        [
+          "backend",
+          "Backend / Integrações"
+        ],
+        [
+          "doctec",
+          "Documentação Técnica"
+        ]
+      ]
+    }
+  ],
+  "families": {
+    "A": {
+      "name": "Estratégia",
+      "desc": "Compreender usuário e negócio para definir um plano"
+    },
+    "B": {
+      "name": "Concept",
+      "desc": "Criar e materializar um conceito norteador"
+    },
+    "C": {
+      "name": "Design de Produto",
+      "desc": "Desde a ideia abstrata até a experiência"
+    },
+    "D": {
+      "name": "Design de Interface",
+      "desc": "Usabilidade e estética para um escopo definido"
+    },
+    "E": {
+      "name": "Design Incremental",
+      "desc": "Evolução de features e telas, passo a passo"
+    }
+  },
+  "types": [
+    {
+      "code": "A1",
+      "cat": "A",
+      "name": "Estratégia de Negócio",
+      "output": "visao",
+      "preexist": "novo",
+      "dev": false,
+      "scope": "negocio",
+      "hasRV": true,
+      "salto": false
+    },
+    {
+      "code": "A2",
+      "cat": "A",
+      "name": "Revisão Estratégica de Negócio",
+      "output": "visao",
+      "preexist": "existente",
+      "dev": false,
+      "scope": "negocio",
+      "hasRV": true,
+      "salto": false
+    },
+    {
+      "code": "A3",
+      "cat": "A",
+      "name": "Estratégia de Produto",
+      "output": "visao",
+      "preexist": "novo",
+      "dev": false,
+      "scope": "produto",
+      "hasRV": true,
+      "salto": false
+    },
+    {
+      "code": "A4",
+      "cat": "A",
+      "name": "Estratégia Multiproduto",
+      "output": "visao",
+      "preexist": "novo",
+      "dev": false,
+      "scope": "multiproduto",
+      "hasRV": true,
+      "salto": false
+    },
+    {
+      "code": "A5",
+      "cat": "A",
+      "name": "Revisão Estratégica de Produto",
+      "output": "visao",
+      "preexist": "existente",
+      "dev": false,
+      "scope": "produto",
+      "hasRV": true,
+      "salto": false
+    },
+    {
+      "code": "A6",
+      "cat": "A",
+      "name": "Revisão Estratégica Multiproduto",
+      "output": "visao",
+      "preexist": "existente",
+      "dev": false,
+      "scope": "multiproduto",
+      "hasRV": true,
+      "salto": false
+    },
+    {
+      "code": "B1",
+      "cat": "B",
+      "name": "Concept Design de Produto",
+      "output": "concept",
+      "preexist": "novo",
+      "dev": false,
+      "scope": "produto",
+      "hasRV": true,
+      "salto": true
+    },
+    {
+      "code": "B2",
+      "cat": "B",
+      "name": "Concept Redesign de Produto",
+      "output": "concept",
+      "preexist": "existente",
+      "dev": false,
+      "scope": "produto",
+      "hasRV": true,
+      "salto": true
+    },
+    {
+      "code": "B3",
+      "cat": "B",
+      "name": "Business Design",
+      "output": "concept",
+      "preexist": "novo",
+      "dev": false,
+      "scope": "negocio",
+      "hasRV": true,
+      "salto": true
+    },
+    {
+      "code": "B4",
+      "cat": "B",
+      "name": "Concept Design de Feature",
+      "output": "concept",
+      "preexist": "novo",
+      "dev": false,
+      "scope": "feature",
+      "hasRV": true,
+      "salto": true
+    },
+    {
+      "code": "B5",
+      "cat": "B",
+      "name": "Concept Redesign de Feature",
+      "output": "concept",
+      "preexist": "existente",
+      "dev": false,
+      "scope": "feature",
+      "hasRV": true,
+      "salto": true
+    },
+    {
+      "code": "C1",
+      "cat": "C",
+      "name": "Design de Produto",
+      "output": "design",
+      "preexist": "novo",
+      "dev": false,
+      "scope": "produto",
+      "hasRV": true,
+      "salto": true
+    },
+    {
+      "code": "C2",
+      "cat": "C",
+      "name": "Design e Desenvolvimento de Produto",
+      "output": "noar",
+      "preexist": "novo",
+      "dev": true,
+      "scope": "produto",
+      "hasRV": true,
+      "salto": true
+    },
+    {
+      "code": "C3",
+      "cat": "C",
+      "name": "Redesign de Produto",
+      "output": "design",
+      "preexist": "existente",
+      "dev": false,
+      "scope": "produto",
+      "hasRV": true,
+      "salto": true
+    },
+    {
+      "code": "C4",
+      "cat": "C",
+      "name": "Redesign e Desenvolvimento de Produto",
+      "output": "noar",
+      "preexist": "existente",
+      "dev": true,
+      "scope": "produto",
+      "hasRV": true,
+      "salto": true
+    },
+    {
+      "code": "D1",
+      "cat": "D",
+      "name": "Design de Interfaces",
+      "output": "design",
+      "preexist": "novo",
+      "dev": false,
+      "scope": "produto",
+      "hasRV": false,
+      "salto": false
+    },
+    {
+      "code": "D2",
+      "cat": "D",
+      "name": "Design e Desenvolvimento de Interfaces",
+      "output": "noar",
+      "preexist": "novo",
+      "dev": true,
+      "scope": "produto",
+      "hasRV": false,
+      "salto": false
+    },
+    {
+      "code": "D3",
+      "cat": "D",
+      "name": "Redesign de Interfaces",
+      "output": "design",
+      "preexist": "existente",
+      "dev": false,
+      "scope": "produto",
+      "hasRV": false,
+      "salto": false
+    },
+    {
+      "code": "D4",
+      "cat": "D",
+      "name": "Redesign e Desenvolvimento de Interfaces",
+      "output": "noar",
+      "preexist": "existente",
+      "dev": true,
+      "scope": "produto",
+      "hasRV": false,
+      "salto": false
+    },
+    {
+      "code": "E1",
+      "cat": "E",
+      "name": "Design de Nova Feature",
+      "output": "design",
+      "preexist": "novo",
+      "dev": false,
+      "scope": "feature",
+      "hasRV": false,
+      "salto": false
+    },
+    {
+      "code": "E2",
+      "cat": "E",
+      "name": "Evolução de Feature (só design)",
+      "output": "design",
+      "preexist": "existente",
+      "dev": false,
+      "scope": "feature",
+      "hasRV": false,
+      "salto": false
+    },
+    {
+      "code": "E3",
+      "cat": "E",
+      "name": "Design e Desenvolvimento de Nova Feature",
+      "output": "noar",
+      "preexist": "novo",
+      "dev": true,
+      "scope": "feature",
+      "hasRV": false,
+      "salto": false
+    },
+    {
+      "code": "E4",
+      "cat": "E",
+      "name": "Evolução de Feature (design e dev)",
+      "output": "noar",
+      "preexist": "existente",
+      "dev": true,
+      "scope": "feature",
+      "hasRV": false,
+      "salto": false
+    },
+    {
+      "code": "E5",
+      "cat": "E",
+      "name": "Design Incremental Multifeature",
+      "output": "design",
+      "preexist": "existente",
+      "dev": false,
+      "scope": "feature",
+      "hasRV": false,
+      "salto": false
+    },
+    {
+      "code": "E6",
+      "cat": "E",
+      "name": "Design e Desenvolvimento Incremental Multifeature",
+      "output": "noar",
+      "preexist": "existente",
+      "dev": true,
+      "scope": "feature",
+      "hasRV": false,
+      "salto": false
+    }
+  ],
+  "detail": {
+    "deb": {
+      "description": "Entendimento do briefing com os requisitos e o contexto necessários para a realização do projeto.",
+      "estimate": {
+        "humanHours": 6,
+        "aiHours": 6
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "setup": {
+      "description": "Organização de projeto, com cronograma, assets, espaços, canais e responsáveis.",
+      "estimate": {
+        "humanHours": 6,
+        "aiHours": 3
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "poket": {
+      "description": "Em projetos mais curtos ou quando já se tem bastante clareza dos requisitos do negócio e necessidades dos usuários, pode-se optar por fazer alguns métodos rápidos de pesquisa.",
+      "estimate": {
+        "humanHours": 55,
+        "aiHours": 29
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "imersao": {
+      "description": "Reuniões e/ou entrevistas com pessoas fundamentais para o entendimento do problema de negócio a ser resolvido.",
+      "estimate": {
+        "humanHours": 17,
+        "aiHours": 17
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "generativas": {
+      "description": "Dinâmicas de colaboração com múltiplos usuários e/ou stakeholders com objetivos específicos definidos no roteiro.",
+      "estimate": {
+        "humanHours": 32,
+        "aiHours": 20
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "benchmarking": {
+      "description": "Pesquisa de soluções existentes que podem servir de inspiração para a resolução do problema.",
+      "estimate": {
+        "humanHours": 25,
+        "aiHours": 10
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "research": {
+      "description": "Entrevistas individuais aprofundadas com usuários ou prospects.",
+      "estimate": {
+        "humanHours": 120,
+        "aiHours": 80
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "jornada": {
+      "description": "Documentação da jornada do usuário \"as is\".",
+      "estimate": {
+        "humanHours": 20,
+        "aiHours": 12
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "metricas": {
+      "description": "Levantamento e interpretação das métricas do produto ou negócio.",
+      "estimate": {
+        "humanHours": 34,
+        "aiHours": 22
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "usabilidade": {
+      "description": "Método para aprofundar a usabilidade e percepção, com usuários reais utilizando o produto atual.",
+      "estimate": {
+        "humanHours": 77.5,
+        "aiHours": 48
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "dataadvanced": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "heuristica": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "experts": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "personas": {
+      "description": "Método usado para aumentar o nível de entendimento e empatia com grupos comportamentais de usuários.",
+      "estimate": {
+        "humanHours": 16,
+        "aiHours": 10
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "journeys": {
+      "description": "Desenho que descreve como a jornada do usuário deveria ser.",
+      "estimate": {
+        "humanHours": 14,
+        "aiHours": 6
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "jtbd": {
+      "description": "Método que foca nas tarefas ou problemas que os usuários esperam realizar em um produto ou serviço.",
+      "estimate": {
+        "humanHours": 8,
+        "aiHours": 6
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "uvp": {
+      "description": "Definição da Proposta de Valor de um produto ou serviço, que explicita o que o torna necessário e único.",
+      "estimate": {
+        "humanHours": 8,
+        "aiHours": 8
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "matriz": {
+      "description": "Mapa de como o produto ou serviço se posiciona no mercado em que está inserido, em comparação com concorrentes e substitutos.",
+      "estimate": {
+        "humanHours": 8,
+        "aiHours": 4
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "keyfeatures": {
+      "description": "Definição das principais funcionalidades de um produto, aquelas que o tornam único, essencial ou especial.",
+      "estimate": {
+        "humanHours": 20,
+        "aiHours": 20
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "backlog": {
+      "description": "Lista de funcionalidades ou user stories de um produto, priorizadas da mais importante até a menos.",
+      "estimate": {
+        "humanHours": 14,
+        "aiHours": 6
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "kpis": {
+      "description": "Os indicadores de performance que representam os objetivos do projeto.",
+      "estimate": {
+        "humanHours": 4,
+        "aiHours": 2
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "docvisao": {
+      "description": "Um relatório que sintetiza os insights de descoberta e apresenta um plano estratégico.",
+      "estimate": {
+        "humanHours": 24,
+        "aiHours": 12
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "arquitetura": {
+      "description": "A estrutura hierárquica que organiza as diferentes telas e áreas do produto.",
+      "estimate": {
+        "humanHours": 8,
+        "aiHours": 6
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "cardsort": {
+      "description": "Os termos escolhidos para definir os módulos, componentes, telas e áreas do produto.",
+      "estimate": {
+        "humanHours": 6,
+        "aiHours": 6
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "uxwriting": {
+      "description": "A criação dos textos das interfaces que ajudam a identificar features e conduzir o usuário.",
+      "estimate": {
+        "humanHours": 12,
+        "aiHours": 8
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "userflows": {
+      "description": "Fluxogramas que detalham partes específicas da jornada digital do usuário.",
+      "estimate": {
+        "humanHours": 12,
+        "aiHours": 6
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "wireframes": {
+      "description": "Definição estrutural que organiza e hierarquiza os componentes e conteúdos de cada tela ou página.",
+      "estimate": {
+        "humanHours": 44,
+        "aiHours": 24
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "telas": {
+      "description": "A listagem numerada das diferentes telas e páginas de um produto. Em alguns casos também podemos listar componentes ou módulos.",
+      "estimate": {
+        "humanHours": 6,
+        "aiHours": 2
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "concept": {
+      "description": "Desenho interativo conceitual que representa uma solução. O concept pode ser esquemático e sem responsabilidade de usabilidade, porém precisa expressar a alma do produto, inclusive com carga emocional. De 1 a 4 telas.",
+      "estimate": {
+        "humanHours": 100,
+        "aiHours": 80
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "happypath": {
+      "description": "O principal fluxo de um produto, com telas e interações bem detalhadas, mas que representam somente uma parte do produto. De 8 a 12 telas.",
+      "estimate": {
+        "humanHours": 140,
+        "aiHours": 95
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "layouts": {
+      "description": "Todas as telas e componentes de um produto digital, com um nível de detalhamento preciso.",
+      "estimate": {
+        "humanHours": 250,
+        "aiHours": 125
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "admin": {
+      "description": "As telas e interações visualizadas e executadas por usuários internos, que são responsáveis por administrar e editar um produto.",
+      "estimate": {
+        "humanHours": 35,
+        "aiHours": 15
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "interacoes": {
+      "description": "Detalhamento do motion design de um produto.",
+      "estimate": {
+        "humanHours": 40,
+        "aiHours": 20
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "designsystem": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "naming": {
+      "description": "Definição do nome de um produto ou marca de uma empresa.",
+      "estimate": {
+        "humanHours": 20,
+        "aiHours": 15
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "identidade": {
+      "description": "Criação ou revisão do conceito de marca / branding, logo e elementos de identidade de uma empresa ou produto.",
+      "estimate": {
+        "humanHours": 70,
+        "aiHours": 45
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "descricao": {
+      "description": "Documentação que indica como se espera que aquelas telas e componentes se comportem.",
+      "estimate": {
+        "humanHours": 60,
+        "aiHours": 25
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "regras": {
+      "description": "Documentação de fórmulas e regras de funcionamento que não são diretamente relacionadas com os componentes e telas.",
+      "estimate": {
+        "humanHours": 18,
+        "aiHours": 14
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "prototipo": {
+      "description": "Implementação das telas em protótipos navegáveis, que podem ter ou não um nível funcional mais avançado e real.",
+      "estimate": {
+        "humanHours": 40,
+        "aiHours": 8
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "tagueamento": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "usabnova": {
+      "description": "",
+      "estimate": {
+        "humanHours": null,
+        "aiHours": null
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "techresearch": {
+      "description": "",
+      "estimate": {
+        "humanHours": 35,
+        "aiHours": 15
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "sysarch": {
+      "description": "",
+      "estimate": {
+        "humanHours": 30,
+        "aiHours": 30
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "infra": {
+      "description": "",
+      "estimate": {
+        "humanHours": 26,
+        "aiHours": 18
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "frontend": {
+      "description": "",
+      "estimate": {
+        "humanHours": 140,
+        "aiHours": 20
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "backend": {
+      "description": "",
+      "estimate": {
+        "humanHours": 250,
+        "aiHours": 50
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    },
+    "doctec": {
+      "description": "",
+      "estimate": {
+        "humanHours": 60,
+        "aiHours": 12
+      },
+      "internalReviewHours": 0,
+      "requirements": [],
+      "evals": [],
+      "activities": []
+    }
+  },
+  "atoms": {
+    "research": [
+      {
+        "titulo": "Recrutamento de participantes",
+        "tag": "humano",
+        "req": [
+          "Perfis-alvo definidos (personas ou critérios)",
+          "Canais de recrutamento disponíveis",
+          "Termo de consentimento aprovado"
+        ],
+        "acoes": [
+          "Triar candidatos pelos critérios",
+          "Agendar as sessões",
+          "Enviar termo e instruções"
+        ],
+        "evals": [
+          "Nº de participantes atinge a meta amostral",
+          "Distribuição cobre os perfis-alvo",
+          "Todos assinaram o consentimento"
+        ]
+      },
+      {
+        "titulo": "Roteiro de entrevista",
+        "tag": "humano",
+        "req": [
+          "Objetivos de pesquisa priorizados",
+          "Hipóteses a testar"
+        ],
+        "acoes": [
+          "Redigir perguntas abertas e não-enviesadas",
+          "Ordenar do geral ao específico",
+          "Rodar piloto com 1 participante"
+        ],
+        "evals": [
+          "Cada objetivo tem ≥1 pergunta",
+          "Sem perguntas indutoras",
+          "Duração estimada ≤ 45 min"
+        ]
+      },
+      {
+        "titulo": "Síntese dos achados",
+        "tag": "ia",
+        "req": [
+          "Transcrições das sessões",
+          "Notas de observação"
+        ],
+        "acoes": [
+          "Codificar trechos por tema",
+          "Agrupar em padrões e tensões",
+          "Redigir os principais insights"
+        ],
+        "evals": [
+          "Cada insight rastreável a ≥2 fontes",
+          "Contradições explicitadas",
+          "Insights acionáveis, não só descritivos"
+        ]
+      }
+    ],
+    "usabilidade": [
+      {
+        "titulo": "Definição de tarefas e cenários",
+        "tag": "humano",
+        "req": [
+          "Protótipo ou produto navegável",
+          "Fluxos críticos identificados"
+        ],
+        "acoes": [
+          "Escrever cenários realistas",
+          "Definir métricas (sucesso, tempo, erros)"
+        ],
+        "evals": [
+          "Tarefas cobrem os fluxos críticos",
+          "Critério de sucesso objetivo por tarefa"
+        ]
+      },
+      {
+        "titulo": "Condução das sessões",
+        "tag": "humano",
+        "req": [
+          "Participantes recrutados",
+          "Ambiente de teste configurado"
+        ],
+        "acoes": [
+          "Conduzir com think-aloud",
+          "Registrar sucesso, erros e tempo",
+          "Não induzir o participante"
+        ],
+        "evals": [
+          "≥5 sessões válidas",
+          "Registro completo por sessão"
+        ]
+      },
+      {
+        "titulo": "Relatório de achados",
+        "tag": "ia",
+        "req": [
+          "Registros das sessões",
+          "Métricas coletadas"
+        ],
+        "acoes": [
+          "Priorizar problemas por severidade × frequência",
+          "Recomendar correções"
+        ],
+        "evals": [
+          "Cada problema com evidência e severidade",
+          "Recomendações acionáveis"
+        ]
+      }
+    ],
+    "wireframes": [
+      {
+        "titulo": "Inventário de conteúdo e componentes",
+        "tag": "humano",
+        "req": [
+          "Lista de telas definida",
+          "User flows aprovados"
+        ],
+        "acoes": [
+          "Levantar conteúdos e dados por tela",
+          "Identificar componentes reutilizáveis"
+        ],
+        "evals": [
+          "Toda tela da lista mapeada",
+          "Componentes recorrentes marcados"
+        ]
+      },
+      {
+        "titulo": "Wireframe das telas-chave",
+        "tag": "humano",
+        "req": [
+          "Inventário de conteúdo",
+          "Arquitetura de informação"
+        ],
+        "acoes": [
+          "Estruturar hierarquia e blocos por tela",
+          "Indicar estados vazio/erro/carregando"
+        ],
+        "evals": [
+          "Hierarquia clara, sem estilo visual",
+          "Estados principais previstos"
+        ]
+      }
+    ],
+    "docvisao": [
+      {
+        "titulo": "Consolidação dos insights de descoberta",
+        "tag": "ia",
+        "req": [
+          "Achados de pesquisa",
+          "Métricas e benchmarks"
+        ],
+        "acoes": [
+          "Sintetizar problema e oportunidade",
+          "Conectar evidências às decisões"
+        ],
+        "evals": [
+          "Problema formulado com evidência",
+          "Nenhuma afirmação sem fonte"
+        ]
+      },
+      {
+        "titulo": "Redação do plano estratégico",
+        "tag": "humano",
+        "req": [
+          "Insights consolidados",
+          "UVP e KPIs definidos"
+        ],
+        "acoes": [
+          "Descrever visão, escopo e princípios",
+          "Priorizar direções"
+        ],
+        "evals": [
+          "Visão em 1 frase memorável",
+          "Escopo e não-escopo explícitos",
+          "Ligado a KPIs"
+        ]
+      }
+    ]
+  }
+}
+</script>
 <script>
 /* ============================================================
    0. STORAGE SHIM — localStorage fallback for GitHub Pages
-   window.storage (Claude artifacts) → localStorage (browser)
    ============================================================ */
 if (typeof window.storage === 'undefined' || !window.storage) {
   window.storage = {
     async get(key, _shared) {
-      try {
-        const v = localStorage.getItem('outrai:' + key);
-        return v !== null ? { key, value: v, shared: !!_shared } : null;
-      } catch(e) { return null; }
+      try { const v = localStorage.getItem('outrai:' + key); return v !== null ? { key, value: v, shared: !!_shared } : null; } catch(e) { return null; }
     },
     async set(key, value, _shared) {
-      try {
-        localStorage.setItem('outrai:' + key, value);
-        return { key, value, shared: !!_shared };
-      } catch(e) { return null; }
+      try { localStorage.setItem('outrai:' + key, value); return { key, value, shared: !!_shared }; } catch(e) { return null; }
     },
     async delete(key, _shared) {
-      try {
-        localStorage.removeItem('outrai:' + key);
-        return { key, deleted: true, shared: !!_shared };
-      } catch(e) { return null; }
+      try { localStorage.removeItem('outrai:' + key); return { key, deleted: true, shared: !!_shared }; } catch(e) { return null; }
     },
     async list(prefix, _shared) {
       const keys = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const k = localStorage.key(i);
-        if (k.startsWith('outrai:' + (prefix || ''))) keys.push(k.replace('outrai:', ''));
-      }
+      for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith('outrai:' + (prefix || ''))) keys.push(k.replace('outrai:', '')); }
       return { keys, prefix, shared: !!_shared };
     }
   };
 }
 
+const DATA = (function(){ try{ return JSON.parse(document.getElementById("app-data").textContent); }catch(e){ console.error("Falha ao carregar app-data:", e); return {}; } })();
 /* ============================================================
    1. PROCESSOS  (universo canônico, agrupado por fase)
    ============================================================ */
-const PHASES = [
-  {id:'start',    name:'Start',                 procs:[['deb','Debriefing'],['setup','Setup de Projeto']]},
-  {id:'desc',     name:'Descoberta',            procs:[['poket','Descoberta Pocket'],['imersao','Imersão com Stakeholders'],['geradoras','Sessões Generativas'],['benchmarking','Benchmarking'],['research','User Research'],['jornada','Mapeamento de Jornada'],['metricas','Análise de Métricas'],['usabilidade','Teste de Usabilidade']]},
-  {id:'def',      name:'Definição',             procs:[['personas','User Personas'],['journeys','User Journeys (to be)'],['jtbd','Jobs to be Done'],['uvp','Unique Value Proposition'],['matriz','Matriz de Posicionamento'],['keyfeatures','Key Features'],['backlog','Product Backlog Priorizado'],['kpis','KPIs / Outcomes Esperados'],['docvisao','Documento de Visão']]},
-  {id:'estrut',   name:'Design da Estrutura',   procs:[['arquitetura','Mapa de Arquitetura'],['cardsort','Labeling'],['uxwriting','UX Writing'],['userflows','User Flows'],['wireframes','Wireframes'],['telas','Lista de Telas']]},
-  {id:'visual',   name:'Design Visual / Interativo', procs:[['concept','Concept Design'],['happypath','Happy Path'],['layouts','Layouts / Componentes (todos)'],['admin','Design de Painel Admin'],['interacoes','Interações / Animações / Ilustrações'],['naming','Naming'],['identidade','Identidade Visual']]},
-  {id:'delivery', name:'Delivery',              procs:[['descricao','Descrição Funcional de Telas'],['regras','Regras de Negócio / Detalhamento'],['prototipo','Prototipação']]},
-  {id:'impl',     name:'Implementação',         procs:[['techresearch','Technical Research'],['sysarch','System Architecture'],['infra','Setup de Infraestrutura'],['frontend','Front End'],['backend','Backend / Integrações'],['doctec','Documentação Técnica']]},
-];
+const PHASES = DATA.phases;
 const PROC_LABEL = {}; PHASES.forEach(p=>p.procs.forEach(([id,l])=>PROC_LABEL[id]=l));
-const PROC_DESC = {
-  deb:'Entendimento do briefing com os requisitos e o contexto necessários para a realização do projeto.',
-  setup:'Organização de projeto, com cronograma, assets, espaços, canais e responsáveis.',
-  poket:'Em projetos mais curtos ou quando já se tem bastante clareza dos requisitos do negócio e necessidades dos usuários, pode-se optar por fazer alguns métodos rápidos de pesquisa.',
-  imersao:'Reuniões e/ou entrevistas com pessoas fundamentais para o entendimento do problema de negócio a ser resolvido.',
-  geradoras:'Dinâmicas de colaboração com múltiplos usuários e/ou stakeholders com objetivos específicos.',
-  benchmarking:'Pesquisa de soluções existentes que podem servir de inspiração para a resolução do problema.',
-  research:'Entrevistas individuais aprofundadas com usuários ou prospects.',
-  jornada:'Documentação da jornada do usuário "as is".',
-  metricas:'Levantamento e interpretação das métricas do produto ou negócio.',
-  usabilidade:'Método para aprofundar a usabilidade e percepção, com usuários reais utilizando o produto.',
-  personas:'Método usado para aumentar o nível de entendimento e empatia com grupos comportamentais de usuários.',
-  journeys:'Desenho que descreve como a jornada do usuário deveria ser.',
-  jtbd:'Método que foca nas tarefas ou problemas que os usuários esperam realizar em um produto ou serviço.',
-  uvp:'Definição da Proposta de Valor de um produto ou serviço, que explicita o que o torna necessário e único.',
-  matriz:'Mapa de como o produto ou serviço se posiciona no mercado em que está inserido, em comparação com concorrentes e substitutos.',
-  keyfeatures:'Definição das principais funcionalidades de um produto, aquelas que o tornam único, essencial ou especial.',
-  backlog:'Lista de funcionalidades ou user stories de um produto, priorizadas da mais importante até a menos.',
-  kpis:'Os indicadores de performance que representam os objetivos do projeto.',
-  docvisao:'Um relatório que sintetiza os insights de descoberta e apresenta um plano estratégico.',
-  arquitetura:'A estrutura hierárquica que organiza as diferentes telas e áreas do produto.',
-  cardsort:'Os termos escolhidos para definir os módulos, componentes, telas e áreas do produto.',
-  uxwriting:'A criação dos textos das interfaces que ajudam a identificar features e conduzir o usuário.',
-  userflows:'Fluxogramas que detalham partes específicas da jornada digital do usuário.',
-  wireframes:'Definição estrutural que organiza e hierarquiza os componentes e conteúdos de cada tela ou página.',
-  telas:'A listagem numerada das diferentes telas e páginas de um produto. Em alguns casos também podemos listar componentes ou módulos.',
-  concept:'Desenho interativo conceitual que representa uma solução. O concept pode ser esquemático e sem responsabilidade de usabilidade, porém precisa expressar a alma do produto, inclusive com carga emocional. De 1 a 4 telas.',
-  happypath:'O principal fluxo de um produto, com telas e interações bem detalhadas, mas que representam somente uma parte do produto. De 8 a 12 telas.',
-  layouts:'Todas as telas e componentes de um produto digital, com um nível de detalhamento preciso.',
-  admin:'As telas e interações visualizadas e executadas por usuários internos, que são responsáveis por administrar e editar um produto.',
-  interacoes:'Detalhamento do motion design de um produto.',
-  naming:'Definição do nome de um produto ou marca de uma empresa.',
-  identidade:'Criação ou revisão do conceito de marca / branding, logo e elementos de identidade de uma empresa ou produto.',
-  descricao:'Documentação que indica como se espera que aquelas telas e componentes se comportem.',
-  regras:'Documentação de fórmulas e regras de funcionamento que não são diretamente relacionadas com os componentes e telas.',
-  prototipo:'Implementação das telas em protótipos navegáveis, que podem ter ou não um nível funcional mais avançado e real.',
-};
+const PROC_DESC = {}; (DATA.detail ? Object.keys(DATA.detail) : []).forEach(id => { PROC_DESC[id] = (DATA.detail[id] && DATA.detail[id].description) || ''; });
 
 /* Estimativas de esforço (em HORAS úteis) por processo: {procId:{h, ai}} */
 let ESTIMATES = {};
 function estGet(id){ return ESTIMATES[id] || {}; }
-async function loadEstimates(){
-  try{
-    if(typeof window!=='undefined' && window.storage){
-      let r = null;
-      try{ r = await window.storage.get('estimates', true); }catch(e){ r=null; }
-      // migração: sem dados compartilhados, promover estimativas privadas antigas para o time
-      if(!(r && r.value)){
-        try{
-          const priv = await window.storage.get('estimates', false);
-          if(priv && priv.value){
-            let pu=null; try{ pu = await window.storage.get('estimates_unit', false); }catch(e){}
-            await window.storage.set('estimates', priv.value, true);
-            await window.storage.set('estimates_unit', (pu&&pu.value)||'hours', true);
-            r = priv;
-          }
-        }catch(e){}
-      }
-      if(r && r.value){
-        let est = JSON.parse(r.value);
-        let unit = null;
-        try{ const u = await window.storage.get('estimates_unit', true); unit = u && u.value; }catch(e){}
-        if(unit!=='hours'){ // legado em dias → converter para horas (×8)
-          const conv={}; Object.keys(est).forEach(id=>{ const e=est[id]||{};
-            conv[id]={ h: typeof e.h==='number'?e.h*8:(e.h??null), ai: typeof e.ai==='number'?e.ai*8:(e.ai??null) }; });
-          est=conv;
-        }
-        ESTIMATES = est;
-        if(unit!=='hours') saveEstimates();
-        renderProcesses(); updateFichaTotals(); refreshBundleSummaries();
-      }
-    }
-  }catch(e){ /* chave inexistente ou storage indisponível */ }
+function loadEstimates(){
+  ESTIMATES = {};
+  const det = DATA.detail || {};
+  Object.keys(det).forEach(id=>{
+    const e = det[id].estimate || {};
+    ESTIMATES[id] = { h: (e.humanHours!=null?e.humanHours:null), ai: (e.aiHours!=null?e.aiHours:null) };
+  });
+  renderProcesses(); updateFichaTotals(); refreshBundleSummaries();
 }
 async function saveEstimates(){
-  try{ if(typeof window!=='undefined' && window.storage){ await window.storage.set('estimates', JSON.stringify(ESTIMATES), true); await window.storage.set('estimates_unit','hours',true); } }catch(e){}
+  try{ if(typeof window!=='undefined' && window.storage){ await window.storage.set('estimates', JSON.stringify(ESTIMATES), false); await window.storage.set('estimates_unit','hours',false); } }catch(e){}
 }
 function setEst(id, field, val){
   if(!ESTIMATES[id]) ESTIMATES[id]={};
   ESTIMATES[id][field] = (val===''||val==null) ? null : parseFloat(val);
   saveEstimates(); updateFichaTotals(); refreshBundleSummaries();
 }
-function exportEstimates(){
-  const blob=new Blob([JSON.stringify(ESTIMATES,null,2)],{type:'application/json'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='outrai-estimativas.json'; a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+function showCopyModal(heading, hint, text){
+  const m=document.getElementById('export-modal'); if(!m) return;
+  m.innerHTML=`<div class="rm-card" style="max-width:680px">
+    <div class="pd-top"><div><div class="pd-eyebrow">Exportar</div><h2>${escAll(heading)}</h2><p class="pd-desc">${escAll(hint)}</p></div><button class="rm-close" onclick="closeExport()" aria-label="Fechar">✕</button></div>
+    <textarea id="export-json" readonly>${escAll(text)}</textarea>
+    <div style="margin-top:12px;display:flex;gap:10px;align-items:center"><button class="btn primary" onclick="copyExport()">Selecionar &amp; copiar</button><span id="export-copied" style="font-size:12px;color:var(--muted)"></span></div>
+  </div>`;
+  m.style.display='flex';
+  const t=document.getElementById('export-json'); if(t){ t.focus(); t.select(); }
 }
+function exportEstimates(){
+  showCopyModal('Exportar estimativas', 'O download não funciona no preview do artefato. O campo abaixo já vem selecionado — copie (Ctrl/Cmd+C) e cole na conversa.', JSON.stringify(ESTIMATES, null, 2));
+}
+function copyExport(){
+  const t=document.getElementById('export-json'); if(!t) return; t.focus(); t.select();
+  let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+  const s=document.getElementById('export-copied'); if(s) s.textContent = ok ? 'Copiado ✓' : 'Selecionado — use Ctrl/Cmd+C';
+}
+function closeExport(){ const m=document.getElementById('export-modal'); if(m) m.style.display='none'; }
 function importEstimates(input){
   const f=input.files[0]; if(!f) return;
   const rd=new FileReader();
@@ -767,44 +2115,195 @@ function closeRoadmap(){ const m=document.getElementById('roadmap-modal'); if(m)
 /* Tela de detalhe de processo (atividades / requisitos / evals) — vazia por ora.
    Futuramente populada por processo; no app do usuário final será a forma de consultar cada processo. */
 function procLabel(id){ for(const ph of PHASES){ for(const [pid,lab] of ph.procs){ if(pid===id) return lab; } } return id; }
+/* ============================================================
+   Reqs & Evals — LEITURA (fonte única: Google Sheets → data.json).
+   DATA.atoms[procId] = [{titulo, tag:'humano'|'ia', req[], acoes[], evals[]}]
+   Edição é feita na planilha; o app apenas reflete (read-only).
+   ============================================================ */
+const RAE_META = { req:{label:'Requisitos'}, acoes:{label:'Ações'}, evals:{label:'Evals'} };
+function escAll(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function atomsGet(pid){ return (DATA.atoms && DATA.atoms[pid]) || []; }
 
 /* ============================================================
-   Átomos (tarefas) por processo — requisitos / ações / evals.
-   Modelo: ATOMS[procId] = [{id,titulo,tag:'humano'|'ia',status,req[],acoes[],evals[],ts}]
-   Storage: 1 chave por processo ('atoms:<id>', shared) → conflito só se 2 pessoas
-   editam o MESMO processo ao mesmo tempo. O storage é CACHE; a casa do dado é o
-   export (.md p/ handoff, .json p/ backup). Exporte antes de trocar o HTML.
+   Leitura ao vivo das 3 abas (só quando hospedado; no preview o CSP
+   bloqueia o fetch → cai no snapshot embutido em #app-data).
+   - Processos  → estrutura (etapas/ordem/id/nome) + descrição/tempos
+   - Tipos      → nome e família dos 25 tipos (atributos ficam no código)
+   - Reqs&Evals → átomos
+   Cada aba tem fallback independente ao embutido. Estado em SYNC → selo visível.
    ============================================================ */
-const ATOM_STATUS = {rascunho:'rascunho', revisao:'em revisão', validado:'validado'};
-const RAE_META = {
-  req:  {label:'Requisitos', hint:'o que precisa existir antes de começar (entrada)'},
-  acoes:{label:'Ações',      hint:'o trabalho em si (processo)'},
-  evals:{label:'Evals',      hint:'critérios de pronto/bom, objetivos e checáveis (saída)'}
-};
-let ATOMS = {};
-function atomsGet(pid){ return ATOMS[pid] || []; }
-function newAtomId(){ return 'a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-function escAll(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-async function loadAtomsFor(pid){
-  try{ if(typeof window!=='undefined' && window.storage){ const r=await window.storage.get('atoms:'+pid, true); if(r&&r.value) ATOMS[pid]=JSON.parse(r.value); } }catch(e){}
-  if(!ATOMS[pid]) ATOMS[pid]=[];
+const _SHEET_BASE   = "https://docs.google.com/spreadsheets/d/19_scUsjHcdQx5CJw0SwTz3rUB45w6kuiT5gzhfaQOqM/gviz/tq?tqx=out:csv&sheet=";
+const SHEET_CSV_URL = _SHEET_BASE + "Reqs%20%26%20Evals";
+const PROC_CSV_URL  = _SHEET_BASE + "Processos";
+const TIPOS_CSV_URL = _SHEET_BASE + "Tipos";
+const SYNC = { procos:'pending', tipos:'pending', atoms:'pending' };   // por aba: live | fallback | pending
+const _norm = s => String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+const _num  = v => { const n=parseFloat(String(v==null?'':v).replace(',','.')); return isFinite(n)?n:null; };
+const ID_BY_LABEL = {};
+function rebuildIdByLabel(){ Object.keys(ID_BY_LABEL).forEach(k=>delete ID_BY_LABEL[k]); PHASES.forEach(ph=>ph.procs.forEach(([id,l])=>{ ID_BY_LABEL[l]=id; })); }
+rebuildIdByLabel();
+function parseCSV(t){
+  const rows=[]; let i=0,f='',row=[],q=false;
+  while(i<t.length){ const c=t[i];
+    if(q){ if(c==='"'){ if(t[i+1]==='"'){ f+='"'; i+=2; continue; } q=false; i++; continue; } f+=c; i++; continue; }
+    if(c==='"'){ q=true; i++; continue; }
+    if(c===','){ row.push(f); f=''; i++; continue; }
+    if(c==='\n'){ row.push(f); rows.push(row); row=[]; f=''; i++; continue; }
+    if(c==='\r'){ i++; continue; }
+    f+=c; i++;
+  }
+  if(f.length||row.length){ row.push(f); rows.push(row); }
+  return rows;
 }
-async function loadAllAtoms(){
-  if(!(typeof window!=='undefined' && window.storage)) return;
-  try{ await Promise.all(PHASES.flatMap(ph=>ph.procs.map(([id])=>loadAtomsFor(id)))); }catch(e){}
+async function fetchCSV(url){
+  const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(),8000);
+  try{
+    const res=await fetch(url,{signal:ctrl.signal}); clearTimeout(to);
+    if(!res.ok) return null;
+    const rows=parseCSV(await res.text()).filter(r=>r.length>1 && r.join('').trim()!=='');
+    return rows.length>=2 ? rows : null;
+  }catch(e){ clearTimeout(to); return null; }
+}
+
+/* Reqs & Evals → DATA.atoms (mapeia nome de Processo → id via ID_BY_LABEL). */
+async function syncAtomsFromSheet(){
+  const rows=await fetchCSV(SHEET_CSV_URL);
+  if(!rows){ SYNC.atoms='fallback'; return; }
+  const H=rows.shift().map(_norm);
+  const col=(...keys)=>H.findIndex(h=>keys.some(k=>h.includes(k)));
+  const ci={ processo:col('processo'), titulo:col('atomo','tarefa','titulo'), tag:col('tag'), req:col('requisito'), acoes:col('aco'), evals:col('eval') };
+  if(ci.processo<0){ console.warn('[outrai] Reqs&Evals sem coluna "Processo" — mantendo embutido. Cabeçalhos:', H); SYNC.atoms='fallback'; return; }
+  const g=(r,i)=> (i>=0 ? (r[i]||'') : '');
+  const sp=s=>String(s||'').split('|').map(x=>x.trim()).filter(Boolean);
+  const atoms={}; const unmatched=new Set();
+  for(const r of rows){
+    const label=g(r,ci.processo).trim();
+    const id=ID_BY_LABEL[label]; if(!id){ if(label) unmatched.add(label); continue; }
+    (atoms[id]=atoms[id]||[]).push({
+      titulo:g(r,ci.titulo).trim(),
+      tag:(g(r,ci.tag).trim().toLowerCase()==='ia'?'ia':'humano'),
+      req:sp(g(r,ci.req)), acoes:sp(g(r,ci.acoes)), evals:sp(g(r,ci.evals))
+    });
+  }
+  if(unmatched.size) console.warn('[outrai] Reqs&Evals — nomes de Processo sem correspondência (confira grafia/acentos):', [...unmatched]);
+  if(!Object.keys(atoms).length){ SYNC.atoms='fallback'; return; }
+  DATA.atoms=atoms; SYNC.atoms='live';
   renderProcesses(); renderRE();
+  const pd=document.getElementById('view-pd');
+  if(pd && pd.classList.contains('active') && PD_CURRENT) renderProcPage(PD_CURRENT);
+  const tb=document.querySelector('#view-re .pd-toolbar span');
+  if(tb) tb.textContent='Fonte: planilha do Google Sheets · sincronizado ao vivo';
 }
-async function saveAtoms(pid){
-  try{ if(typeof window!=='undefined' && window.storage) await window.storage.set('atoms:'+pid, JSON.stringify(ATOMS[pid]||[]), true); }catch(e){}
-}
-const _atomTimers={};
-function saveAtomsSoon(pid){ clearTimeout(_atomTimers[pid]); _atomTimers[pid]=setTimeout(()=>saveAtoms(pid),600); }
 
-/* ---- Aba Requisitos & Evals: etapa → processo → átomo → req/ações/evals ---- */
-let RE_PHASE = PHASES[0].id;   // etapa ativa
+/* Processos → reconstrói ESTRUTURA (etapas/ordem/id/nome em DATA.phases) + detalhe
+   (descrição, tempos, revisão em DATA.detail). Preserva ids de etapa existentes por nome;
+   gera id para etapa nova. Campos legados do detalhe são carregados do embutido. Fallback: embutido. */
+async function syncProcessosFromSheet(){
+  const rows=await fetchCSV(PROC_CSV_URL);
+  if(!rows){ SYNC.procos='fallback'; return; }
+  const H=rows.shift().map(_norm);
+  const idc=H.findIndex(h=>h==='id'), etc=H.findIndex(h=>h.startsWith('etapa')), lbl=H.findIndex(h=>h.startsWith('processo')),
+        ord=H.findIndex(h=>h.startsWith('ordem')), dsc=H.findIndex(h=>h.startsWith('descri')),
+        hum=H.findIndex(h=>h.includes('humano')), iac=H.findIndex(h=>h.startsWith('ia')), rev=H.findIndex(h=>h.includes('revis'));
+  if(idc<0||etc<0||lbl<0){ console.warn('[outrai] Aba Processos sem colunas id/Etapa/Processo — mantendo embutido. Cabeçalhos:', H); SYNC.procos='fallback'; return; }
+  const g=(r,i)=> (i>=0 ? (r[i]||'') : '');
+  const data=rows.map((r,i)=>({ i, ord:(ord>=0?_num(g(r,ord)):null), etapa:g(r,etc).trim(), id:g(r,idc).trim(), label:g(r,lbl).trim(),
+      desc:g(r,dsc).trim(), hum:_num(g(r,hum)), ai:_num(g(r,iac)), rev:_num(g(r,rev)) }))
+    .filter(x=>x.id && x.etapa && x.label);
+  if(!data.length){ SYNC.procos='fallback'; return; }
+  data.sort((a,b)=>{ const ao=a.ord==null?1e9:a.ord, bo=b.ord==null?1e9:b.ord; return ao-bo || a.i-b.i; });
+  const nameToId={}; PHASES.forEach(ph=>{ nameToId[_norm(ph.name)]=ph.id; });
+  const slug=s=>_norm(s).replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')||'etapa';
+  const oldDetail=DATA.detail||{};
+  const phases=[], pByName={}, detail={}, seen=new Set(), dup=new Set();
+  for(const x of data){
+    if(seen.has(x.id)) dup.add(x.id); seen.add(x.id);
+    let ph=pByName[x.etapa];
+    if(!ph){ ph={ order:phases.length+1, id:nameToId[_norm(x.etapa)]||slug(x.etapa), name:x.etapa, procs:[] }; pByName[x.etapa]=ph; phases.push(ph); }
+    ph.procs.push([x.id, x.label]);
+    const prev=oldDetail[x.id]||{}, pe=prev.estimate||{};
+    detail[x.id]={
+      description: x.desc || prev.description || '',
+      estimate:{ humanHours: x.hum!=null?x.hum:(pe.humanHours!=null?pe.humanHours:null), aiHours: x.ai!=null?x.ai:(pe.aiHours!=null?pe.aiHours:null) },
+      internalReviewHours: x.rev!=null?x.rev:(prev.internalReviewHours!=null?prev.internalReviewHours:0),
+      requirements: prev.requirements||[], evals: prev.evals||[], activities: prev.activities||[]
+    };
+  }
+  // commit mutando no lugar (PHASES/DATA.detail/caches são const ligados às refs)
+  PHASES.length=0; phases.forEach(p=>PHASES.push(p)); DATA.phases=PHASES;
+  DATA.detail=detail;
+  Object.keys(PROC_LABEL).forEach(k=>delete PROC_LABEL[k]); PHASES.forEach(p=>p.procs.forEach(([id,l])=>PROC_LABEL[id]=l));
+  Object.keys(PROC_DESC).forEach(k=>delete PROC_DESC[k]); Object.keys(detail).forEach(id=>PROC_DESC[id]=detail[id].description||'');
+  rebuildIdByLabel();
+  if(!PHASES.some(p=>p.id===RE_PHASE)){ const f=PHASES.find(p=>p.procs.some(([id])=>atomsGet(id).length))||PHASES[0]; RE_PHASE=f?f.id:null; }
+  if(dup.size) console.warn('[outrai] ids de processo duplicados na aba Processos (último venceu):', [...dup]);
+  SYNC.procos='live';
+  loadEstimates(); renderRE(); renderWizard(); renderCatalog();
+  const pd=document.getElementById('view-pd');
+  if(pd && pd.classList.contains('active') && PD_CURRENT){ if(DATA.detail[PD_CURRENT]) renderProcPage(PD_CURRENT); else backToProcessos(); }
+}
+
+/* Tipos → atualiza nome e família dos 25 tipos existentes (chave = Código).
+   Atributos (output/preexist/dev/scope/hasRV/salto) ficam no código. Tipo novo = estrutural. */
+async function syncTiposFromSheet(){
+  const rows=await fetchCSV(TIPOS_CSV_URL);
+  if(!rows){ SYNC.tipos='fallback'; return; }
+  const H=rows.shift().map(_norm);
+  const cod=H.findIndex(h=>h.startsWith('cod')), fam=H.findIndex(h=>h.startsWith('fam')), nom=H.findIndex(h=>h.includes('nome'));
+  if(cod<0){ console.warn('[outrai] Aba Tipos sem coluna "Código" — mantendo embutido. Cabeçalhos:', H); SYNC.tipos='fallback'; return; }
+  const g=(r,i)=> (i>=0 ? (r[i]||'') : '');
+  const byCode={}; TYPES.forEach(t=>byCode[t.code]=t);
+  const unknown=[]; let touched=0;
+  for(const r of rows){
+    const code=g(r,cod).trim(); if(!code) continue;
+    const t=byCode[code]; if(!t){ unknown.push(code); continue; }   // tipo novo (sem atributos) = estrutural
+    const nm=g(r,nom).trim(); if(nm) t.name=nm;
+    const fm=g(r,fam).trim().toUpperCase(); if(fm && FAMILIES[fm]) t.cat=fm;
+    touched++;
+  }
+  if(unknown.length) console.warn('[outrai] Tipos novos na planilha (sem atributos → fora do Wizard; estrutural):', unknown);
+  if(!touched){ SYNC.tipos='fallback'; return; }
+  SYNC.tipos='live';
+  renderCatalog(); renderWizard();
+}
+
+/* Diagnóstico de sincronia: cruza os ids que o Wizard referencia com os ids vivos da planilha. */
+function runSyncDiagnostics(){
+  const liveIds=new Set(); PHASES.forEach(p=>p.procs.forEach(([id])=>liveIds.add(id)));
+  const wiz=new Set();
+  try{ TYPES.forEach(t=>{ const r=recommend(Object.assign({branding:false,feature:false,multifeat:false}, t)); Object.keys(r||{}).forEach(id=>wiz.add(id)); }); }catch(e){}
+  const wizMissing=[...wiz].filter(id=>!liveIds.has(id));   // Wizard aponta p/ processo que não existe na planilha
+  const notInWiz=[...liveIds].filter(id=>!wiz.has(id));     // processo na planilha ainda não usado pelo Wizard
+  if(wizMissing.length) console.warn('[outrai][sync] Wizard referencia ids AUSENTES na planilha (o código precisa ser sincronizado):', wizMissing);
+  if(notInWiz.length) console.info('[outrai][sync] Processos na planilha ainda não usados pelo Wizard:', notInWiz);
+  updateSyncBadge(wizMissing);
+}
+
+function updateSyncBadge(wizMissing){
+  const el=document.getElementById('sync-badge'); if(!el) return;
+  const tabs=[['Processos',SYNC.procos],['Tipos',SYNC.tipos],['Reqs & Evals',SYNC.atoms]];
+  const fell=tabs.filter(([,s])=>s==='fallback').map(([n])=>n);
+  const live=tabs.filter(([,s])=>s==='live').map(([n])=>n);
+  const snapDate=DATA.snapshotDate||'';
+  let cls,text,title;
+  if(wizMissing && wizMissing.length){ cls='warn'; text='sincronia: divergência'; title='Wizard aponta para processos que não existem na planilha: '+wizMissing.join(', ')+'. O código precisa ser sincronizado.'; }
+  else if(fell.length===tabs.length){ cls='embed'; text='snapshot'+(snapDate?' · '+snapDate:''); title='Nenhuma aba lida ao vivo (preview/offline ou planilha não publicada). Exibindo o snapshot embutido'+(snapDate?' de '+snapDate:'')+'.'; }
+  else if(fell.length){ cls='embed'; text='parcial · '+live.length+'/3 ao vivo'; title='Ao vivo: '+(live.join(', ')||'—')+'. Embutido: '+fell.join(', ')+(snapDate?' (snapshot de '+snapDate+')':'')+'.'; }
+  else { cls='ok'; text='planilha ao vivo'; title='As 3 abas foram lidas da planilha.'+(snapDate?' Snapshot base: '+snapDate+'.':''); }
+  el.className='sync-badge '+cls; el.textContent='● '+text; el.title=title; el.style.display='block';
+}
+
+/* Orquestra a leitura ao vivo. Ordem importa: Processos (define ids/labels) → Tipos → Átomos. */
+async function syncAll(){
+  await syncProcessosFromSheet();
+  await syncTiposFromSheet();
+  await syncAtomsFromSheet();
+  runSyncDiagnostics();
+}
+
+let RE_PHASE = (function(){ const p=PHASES.find(ph=>ph.procs.some(([id])=>atomsGet(id).length)); return (p||PHASES[0]).id; })();   // etapa ativa (começa na 1ª com átomos)
 let RE_OPEN_PROC = null;        // processo expandido (um por vez)
-const RE_OPEN_ATOM = {};        // atomId -> aberto?
+const RE_OPEN_ATOM = {};        // atomKey -> aberto?
 
 /* clique num processo na aba "Processos" leva pra cá, já focado nele */
 function openProcDetail(id){
@@ -815,13 +2314,78 @@ function openProcDetail(id){
   const el=document.getElementById('view-re'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+/* ---- Página de detalhe do processo (read-only): descrição + átomos + reqs + evals ----
+   Alcançada pela aba Processos (todos os 47 são clicáveis; processos com conteúdo aparecem em verde vivid, sem conteúdo em dim).
+   Voltar retorna à aba Processos; anterior/próximo percorre todos os 47 processos na ordem canônica. */
+let PD_CURRENT=null;
+function procsWithContent(){
+  const out=[];
+  PHASES.forEach(ph=>ph.procs.forEach(([id,label])=>{ if(atomsGet(id).length) out.push({id,label,phase:ph.name}); }));
+  return out;
+}
+function allProcs(){
+  const out=[];
+  PHASES.forEach(ph=>ph.procs.forEach(([id,label])=>out.push({id,label,phase:ph.name,hasContent:atomsGet(id).length>0})));
+  return out;
+}
+function openProcPage(id){
+  PD_CURRENT=id;
+  ['wiz','cat','proc','re'].forEach(x=>{
+    document.getElementById('view-'+x).classList.remove('active');
+    document.getElementById('tab-'+x).classList.remove('active');
+  });
+  document.getElementById('view-pd').classList.add('active');
+  renderProcPage(id);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function backToProcessos(){ setTab('proc'); window.scrollTo({top:0}); }
+function renderProcPage(id){
+  const el=document.getElementById('pd-body'); if(!el) return;
+  const ph=PHASES.find(p=>p.procs.some(([pid])=>pid===id));
+  const label=PROC_LABEL[id]||id;
+  const desc=PROC_DESC[id]||'';
+  const atoms=atomsGet(id);
+  const seq=allProcs();
+  const idx=seq.findIndex(p=>p.id===id);
+  const prev=idx>0?seq[idx-1]:null;
+  const next=(idx>=0&&idx<seq.length-1)?seq[idx+1]:null;
+  const stepBtn=(p,dir)=>{
+    const arrow=dir==='prev'?'←':'→';
+    if(!p) return `<button class="pd-step" disabled aria-disabled="true"><span class="pd-step-dir">${arrow}</span><span class="pd-step-lab">${dir==='prev'?'Anterior':'Próximo'}</span></button>`;
+    const dimCls=p.hasContent?'':'dim';
+    return dir==='prev'
+      ? `<button class="pd-step ${dimCls}" onclick="openProcPage('${p.id}')" title="${escAll(p.label)}"><span class="pd-step-dir">←</span><span class="pd-step-lab">${escAll(p.label)}</span></button>`
+      : `<button class="pd-step ${dimCls}" onclick="openProcPage('${p.id}')" title="${escAll(p.label)}"><span class="pd-step-lab">${escAll(p.label)}</span><span class="pd-step-dir">→</span></button>`;
+  };
+  const posText = `${idx+1} / ${seq.length}`;
+  const atomsHtml = atoms.length ? atoms.map(a=>`
+    <div class="pd-atom">
+      <div class="pd-atom-head">
+        <span class="pd-atom-title">${a.titulo?escAll(a.titulo):'<i style="color:var(--off);font-weight:400">Sem título</i>'}</span>
+        <span class="atom-tag ${a.tag==='ia'?'ia':'humano'}">${a.tag==='ia'?'🦾 IA':'💪 humano'}</span>
+      </div>
+      <div class="rae">${raeBlockHTML(a,'req')}${raeBlockHTML(a,'acoes')}${raeBlockHTML(a,'evals')}</div>
+    </div>`).join('') : `<div class="pd-atoms-empty">Este processo ainda não tem conteúdo detalhado. Quando houver átomos na planilha, eles aparecerão aqui.</div>`;
+  el.innerHTML=`
+    <div class="pd-nav-top">
+      <button class="pd-back" onclick="backToProcessos()"><span aria-hidden="true">←</span> Voltar aos processos</button>
+      <div class="pd-linear"><span class="pd-pos">${posText}</span>${stepBtn(prev,'prev')}${stepBtn(next,'next')}</div>
+    </div>
+    <div class="pd-page">
+      <div class="pd-eyebrow">${ph?escAll(ph.name):''}</div>
+      <h1 class="pd-h1">${escAll(label)}</h1>
+      ${desc?`<p class="pd-desc">${escAll(desc)}</p>`:''}
+      <div class="pd-atoms">${atomsHtml}</div>
+    </div>
+    <div class="pd-nav-bottom">${stepBtn(prev,'prev')}${stepBtn(next,'next')}</div>`;
+}
 function reSetPhase(id){ RE_PHASE=id; RE_OPEN_PROC=null; renderRE(); }
 function reToggleProc(id){ RE_OPEN_PROC=(RE_OPEN_PROC===id?null:id); renderRE(); }
 function reToggleAtom(aid){ RE_OPEN_ATOM[aid]=!RE_OPEN_ATOM[aid]; renderRE(); }
 
 function renderRE(){
   const el=document.getElementById('re-body'); if(!el) return;
-  let html=`<div class="re-subnav">${PHASES.map(ph=>`<button class="re-pill${ph.id===RE_PHASE?' active':''}" onclick="reSetPhase('${ph.id}')">${ph.name}</button>`).join('')}</div>`;
+  let html=`<div class="re-subnav">${PHASES.map(ph=>{const c=ph.procs.reduce((a,[id])=>a+atomsGet(id).length,0); return `<button class="re-pill${ph.id===RE_PHASE?' active':''}" onclick="reSetPhase('${ph.id}')">${escAll(ph.name)}${c?` <span class="re-pill-n">${c}</span>`:''}</button>`;}).join('')}</div>`;
   const ph=PHASES.find(p=>p.id===RE_PHASE)||PHASES[0];
   html+=`<div class="re-procs">`;
   ph.procs.forEach(([id,label])=>{
@@ -840,68 +2404,33 @@ function renderRE(){
 function reProcBody(id){
   const desc=PROC_DESC[id]||''; const list=atomsGet(id);
   return `${desc?`<p class="re-proc-desc">${escAll(desc)}</p>`:''}
-    <div class="re-atoms">${list.length?list.map((_,i)=>reAtomHTML(id,i)).join(''):'<div class="pd-empty">Nenhum átomo ainda.</div>'}</div>
-    <button class="atom-add" onclick="addAtom('${id}')">+ Adicionar átomo (tarefa)</button>`;
+    <div class="re-atoms">${list.length?list.map((a,i)=>reAtomHTML(id,i)).join(''):'<div class="pd-empty">Sem átomos ainda — preencha na planilha.</div>'}</div>`;
 }
 function reAtomHTML(pid,i){
-  const a=ATOMS[pid][i]; const open=!!RE_OPEN_ATOM[a.id];
+  const a=atomsGet(pid)[i]; const aid=pid+'__'+i; const open=!!RE_OPEN_ATOM[aid];
   return `<div class="atom${open?' open':''}">
-    <div class="atom-bar" onclick="reToggleAtom('${a.id}')">
+    <div class="atom-bar" onclick="reToggleAtom('${aid}')">
       <span class="chev">▶</span>
       <span class="atom-bar-title">${a.titulo?escAll(a.titulo):'<i>Sem título</i>'}</span>
-      <button class="atom-tag ${a.tag==='ia'?'ia':'humano'}" onclick="event.stopPropagation();toggleTag('${pid}',${i})" title="Alternar humano / assistido por IA">${a.tag==='ia'?'🦾 IA':'💪 humano'}</button>
+      <span class="atom-tag ${a.tag==='ia'?'ia':'humano'}">${a.tag==='ia'?'🦾 IA':'💪 humano'}</span>
     </div>
-    ${open?`<div class="atom-editor">
-      <div class="atom-head">
-        <input class="atom-title" value="${escAll(a.titulo)}" placeholder="Nome da tarefa (átomo)" oninput="setAtom('${pid}',${i},'titulo',this.value)">
-        <button class="atom-del" title="Excluir átomo" onclick="delAtom('${pid}',${i})">🗑</button>
-      </div>
-      <div class="rae">${raeBlockHTML(pid,i,'req')}${raeBlockHTML(pid,i,'acoes')}${raeBlockHTML(pid,i,'evals')}</div>
-      ${a.ts?`<div class="atom-meta">última edição: ${new Date(a.ts).toLocaleString('pt-BR')}</div>`:''}
-    </div>`:''}
+    ${open?`<div class="atom-editor"><div class="rae">${raeBlockHTML(a,'req')}${raeBlockHTML(a,'acoes')}${raeBlockHTML(a,'evals')}</div></div>`:''}
   </div>`;
 }
-function raeBlockHTML(pid,i,field){
-  const a=ATOMS[pid][i]; const items=a[field]||[]; const m=RAE_META[field];
+function raeBlockHTML(a,field){
+  const items=(a[field]||[]).map(x=>String(x).trim()).filter(Boolean); const m=RAE_META[field];
   return `<div class="rae-block">
-    <div class="rae-title">${m.label}</div><div class="rae-hint">${escAll(m.hint)}</div>
-    ${items.map((v,j)=>`<div class="rae-item"><textarea rows="1" oninput="setRae('${pid}',${i},'${field}',${j},this.value)" placeholder="…">${escAll(v)}</textarea><button class="del" title="Remover item" onclick="delRae('${pid}',${i},'${field}',${j})">✕</button></div>`).join('')}
-    <button class="rae-add" onclick="addRae('${pid}',${i},'${field}')">+ item</button></div>`;
+    <div class="rae-title">${m.label}</div>
+    ${items.length?`<ul class="pd-list">${items.map(v=>`<li>${escAll(v)}</li>`).join('')}</ul>`:`<div class="pd-empty">—</div>`}
+  </div>`;
 }
-function addAtom(pid){ if(!ATOMS[pid])ATOMS[pid]=[]; const a={id:newAtomId(),titulo:'',tag:'humano',req:[''],acoes:[''],evals:[''],ts:Date.now()}; ATOMS[pid].push(a); RE_OPEN_ATOM[a.id]=true; saveAtoms(pid); renderRE(); renderProcesses(); }
-function delAtom(pid,i){ if(!confirm('Excluir este átomo? Não dá pra desfazer.'))return; ATOMS[pid].splice(i,1); saveAtoms(pid); renderRE(); renderProcesses(); }
-function setAtom(pid,i,f,v){ const a=ATOMS[pid][i]; if(!a)return; a[f]=v; a.ts=Date.now(); saveAtomsSoon(pid); }
-function toggleTag(pid,i){ const a=ATOMS[pid][i]; a.tag=(a.tag==='ia'?'humano':'ia'); a.ts=Date.now(); saveAtoms(pid); renderRE(); }
-function setRae(pid,i,f,j,v){ const a=ATOMS[pid][i]; if(!a[f])a[f]=[]; a[f][j]=v; a.ts=Date.now(); saveAtomsSoon(pid); }
-function addRae(pid,i,f){ const a=ATOMS[pid][i]; if(!a[f])a[f]=[]; a[f].push(''); a.ts=Date.now(); saveAtoms(pid); renderRE(); }
-function delRae(pid,i,f,j){ const a=ATOMS[pid][i]; a[f].splice(j,1); a.ts=Date.now(); saveAtoms(pid); renderRE(); }
 
-/* ---- export / import da base ---- */
+/* ---- export (read-only) do que está refletido ---- */
 function _stamp(){ return new Date().toISOString().slice(0,10); }
-function _dl(name,text,mime){ const b=new Blob([text],{type:mime}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
-function exportAtomsJSON(){
-  const out=[];
-  PHASES.forEach(ph=>ph.procs.forEach(([id,label])=>{
-    atomsGet(id).forEach(a=>{
-      const req=(a.req||[]).map(x=>(x||'').trim()).filter(Boolean);
-      const acoes=(a.acoes||[]).map(x=>(x||'').trim()).filter(Boolean);
-      const evals=(a.evals||[]).map(x=>(x||'').trim()).filter(Boolean);
-      if(!(a.titulo||'').trim() && !req.length && !acoes.length && !evals.length) return;
-      out.push({
-        fase: ph.name,
-        processo: label,
-        titulo: (a.titulo||'').trim(),
-        executor: a.tag==='ia'?'ia':'humano',
-        requisitos: req,
-        acoes: acoes,
-        evals: evals
-      });
-    });
-  }));
-  _dl('outrai-reqs-evals-'+_stamp()+'.json', JSON.stringify(out,null,2), 'application/json');
-}
+function _dl(name,text,mime){ showCopyModal(name, 'Copie o conteúdo e salve onde precisar (o download não funciona no preview do artefato).', text); }
+function exportAtomsJSON(){ _dl('outrai-reqs-evals-'+_stamp()+'.json', JSON.stringify(DATA.atoms||{},null,2), 'application/json'); }
 function exportAtomsMD(){
-  let md='# outrai · Requisitos & Evals\n\n_Exportado em '+new Date().toLocaleString('pt-BR')+'_\n';
+  let md='# outrai · Reqs & Evals\n\n_Exportado em '+new Date().toLocaleString('pt-BR')+'_\n';
   const sec=(t,arr)=>{ const it=(arr||[]).map(x=>(x||'').trim()).filter(Boolean); return it.length?'\n**'+t+'**\n'+it.map(x=>'- '+x).join('\n')+'\n':''; };
   PHASES.forEach(ph=>{
     const withAtoms=ph.procs.filter(([id])=>atomsGet(id).length);
@@ -917,27 +2446,13 @@ function exportAtomsMD(){
   });
   _dl('outrai-reqs-evals-'+_stamp()+'.md', md, 'text/markdown');
 }
-function importAtoms(input){
-  const f=input.files&&input.files[0]; if(!f)return;
-  if(!confirm('Importar SUBSTITUI toda a base de requisitos & evals atual. Você exportou um backup antes? Continuar?')){ input.value=''; return; }
-  const rd=new FileReader();
-  rd.onload=()=>{ try{ const data=JSON.parse(rd.result); if(!data||typeof data!=='object'||Array.isArray(data)) throw 0;
-    ATOMS=data; PHASES.forEach(ph=>ph.procs.forEach(([id])=>saveAtoms(id))); renderProcesses(); renderRE();
-    alert('Base importada com sucesso.');
-  }catch(e){ alert('Arquivo inválido — esperado um .json exportado por esta ferramenta.'); } input.value=''; };
-  rd.readAsText(f);
-}
+
+function closeProcDetail(){ const m=document.getElementById('proc-modal'); if(m) m.style.display='none'; }
 
 /* ============================================================
    2. TIPOS (26 base)  — atributos dirigem a recomendação
    ============================================================ */
-const FAMILIES = {
-  A:{name:'Estratégia',        desc:'Compreender usuário e negócio para definir um plano'},
-  B:{name:'Concept',           desc:'Criar e materializar um conceito norteador'},
-  C:{name:'Design de Produto', desc:'Desde a ideia abstrata até a experiência'},
-  D:{name:'Design de Interface',desc:'Usabilidade e estética para um escopo definido'},
-  E:{name:'Design Incremental',desc:'Evolução de features e telas, passo a passo'},
-};
+const FAMILIES = DATA.families;
 const FAM_COLORS = {
   A:{c:'#4C6EF5', s:'#ECF0FE'},
   B:{c:'#7048E8', s:'#F0ECFD'},
@@ -946,37 +2461,7 @@ const FAM_COLORS = {
   E:{c:'#E64980', s:'#FCEBF1'},
 };
 // output: visao<concept<design<noar   | preexist: novo/existente | scope: negocio/produto/multiproduto/feature
-const TYPES = [
-  {code:'A1',cat:'A',name:'Estratégia de Negócio',              output:'visao', preexist:'novo',     dev:false, scope:'negocio',     hasRV:true,  salto:false},
-  {code:'A2',cat:'A',name:'Revisão Estratégica de Negócio',     output:'visao', preexist:'existente',dev:false, scope:'negocio',     hasRV:true,  salto:false},
-  {code:'A3',cat:'A',name:'Estratégia de Produto',              output:'visao', preexist:'novo',     dev:false, scope:'produto',     hasRV:true,  salto:false},
-  {code:'A4',cat:'A',name:'Estratégia Multiproduto',            output:'visao', preexist:'novo',     dev:false, scope:'multiproduto',hasRV:true,  salto:false},
-  {code:'A5',cat:'A',name:'Revisão Estratégica de Produto',     output:'visao', preexist:'existente',dev:false, scope:'produto',     hasRV:true,  salto:false},
-  {code:'A6',cat:'A',name:'Revisão Estratégica Multiproduto',   output:'visao', preexist:'existente',dev:false, scope:'multiproduto',hasRV:true,  salto:false},
-
-  {code:'B1',cat:'B',name:'Concept Design de Produto',          output:'concept',preexist:'novo',    dev:false, scope:'produto',     hasRV:true,  salto:true },
-  {code:'B2',cat:'B',name:'Concept Redesign de Produto',        output:'concept',preexist:'existente',dev:false,scope:'produto',     hasRV:true,  salto:true },
-  {code:'B3',cat:'B',name:'Business Design',                    output:'concept',preexist:'novo',    dev:false, scope:'negocio',     hasRV:true,  salto:true },
-  {code:'B4',cat:'B',name:'Concept Design de Feature',          output:'concept',preexist:'novo',    dev:false, scope:'feature',     hasRV:true,  salto:true },
-  {code:'B5',cat:'B',name:'Concept Redesign de Feature',        output:'concept',preexist:'existente',dev:false,scope:'feature',     hasRV:true,  salto:true },
-
-  {code:'C1',cat:'C',name:'Design de Produto',                  output:'design', preexist:'novo',    dev:false, scope:'produto',     hasRV:true,  salto:true },
-  {code:'C2',cat:'C',name:'Design e Desenvolvimento de Produto',output:'noar',  preexist:'novo',    dev:true,  scope:'produto',     hasRV:true,  salto:true },
-  {code:'C3',cat:'C',name:'Redesign de Produto',                output:'design', preexist:'existente',dev:false,scope:'produto',     hasRV:true,  salto:true },
-  {code:'C4',cat:'C',name:'Redesign e Desenvolvimento de Produto',output:'noar',preexist:'existente',dev:true, scope:'produto',     hasRV:true,  salto:true },
-
-  {code:'D1',cat:'D',name:'Design de Interfaces',               output:'design', preexist:'novo',    dev:false, scope:'produto',     hasRV:false, salto:false},
-  {code:'D2',cat:'D',name:'Design e Desenvolvimento de Interfaces',output:'noar',preexist:'novo',    dev:true,  scope:'produto',     hasRV:false, salto:false},
-  {code:'D3',cat:'D',name:'Redesign de Interfaces',             output:'design', preexist:'existente',dev:false,scope:'produto',     hasRV:false, salto:false},
-  {code:'D4',cat:'D',name:'Redesign e Desenvolvimento de Interfaces',output:'noar',preexist:'existente',dev:true,scope:'produto',   hasRV:false, salto:false},
-
-  {code:'E1',cat:'E',name:'Design de Nova Feature',             output:'design', preexist:'novo',    dev:false, scope:'feature',     hasRV:false, salto:false},
-  {code:'E2',cat:'E',name:'Evolução de Feature (só design)',    output:'design', preexist:'existente',dev:false,scope:'feature',     hasRV:false, salto:false},
-  {code:'E3',cat:'E',name:'Design e Desenvolvimento de Nova Feature',output:'noar',preexist:'novo', dev:true, scope:'feature',      hasRV:false, salto:false},
-  {code:'E4',cat:'E',name:'Evolução de Feature (design e dev)', output:'noar',  preexist:'existente',dev:true, scope:'feature',     hasRV:false, salto:false},
-  {code:'E5',cat:'E',name:'Design Incremental Multifeature',    output:'design', preexist:'existente',dev:false,scope:'feature',     hasRV:false, salto:false},
-  {code:'E6',cat:'E',name:'Design e Desenvolvimento Incremental Multifeature',output:'noar',preexist:'existente',dev:true,scope:'feature',hasRV:false,salto:false},
-];
+const TYPES = DATA.types;
 const TYPE_BY_CODE = {}; TYPES.forEach(t=>TYPE_BY_CODE[t.code]=t);
 const OUT_ORD = {visao:1,concept:2,design:3,noar:4};
 
@@ -994,19 +2479,28 @@ function recommend(a){
   if(a.hasRV){
     const feat = a.scope==='feature';
     set('imersao','on');
-    set('geradoras', feat?'opt':((a.preexist==='novo'||a.salto)?'on':'opt'));
+    set('generativas', feat?'opt':((a.preexist==='novo'||a.salto)?'on':'opt'));
     set('benchmarking', feat?'opt':'on');
     set('research','on');
     set('jornada','on');
   } else {
     set('imersao','opt');
-    set('geradoras','off');
+    set('generativas','off');
     set('benchmarking','opt');
     set('research','opt', true);
     set('jornada','opt');
   }
-  // Teste de Usabilidade: sempre desmarcado; recomendado só em redesigns de produto/feature (não em revisão estratégica)
+  // Product Analytics: marcado em projetos de produtos existentes (features ou produto inteiro)
+  set('metricas', a.preexist==='existente' ? 'on' : 'off');
+  // Data Analytics Avançado: nunca recomendado; def em grandes saltos de redesenho de produtos existentes
+  set('dataadvanced', 'off', a.preexist==='existente' && a.salto);
+  // Avaliação Heurística: marcada em projetos com descoberta (exceto pocket)
+  set('heuristica', a.hasRV ? 'on' : 'off');
+  // Teste de Usabilidade de Solução Atual: sempre desmarcado; def em redesigns de produto/feature (não revisão estratégica)
   set('usabilidade','off', a.preexist==='existente' && (a.scope==='produto'||a.scope==='feature') && a.cat!=='A');
+  // Entrevista com Experts: nunca recomendado; def em A, B, C
+  set('experts', 'off', ['A','B','C'].includes(a.cat));
+  set('poket', (a.cat==='E' && a.preexist==='existente') ? 'on' : 'off');
 
   // Definição
   if(a.hasRV && a.scope==='feature'){
@@ -1024,8 +2518,6 @@ function recommend(a){
     set('keyfeatures','opt'); set('backlog','opt'); set('kpis','opt');
   }
   set('docvisao', a.hasRV ? 'on' : 'off');
-  set('metricas', (a.preexist==='existente' && a.hasRV) ? 'on' : 'off');
-  set('poket', (a.cat==='E' && a.preexist==='existente') ? 'on' : 'off');
 
   // Estrutura
   set('arquitetura', O>=2?'on':'off');
@@ -1038,29 +2530,39 @@ function recommend(a){
   set('layouts', O>=3?'on':'off');
   set('admin', 'off', O>=3);
   set('interacoes', O>=3?'on':(O===2?'opt':'off'));
+  set('designsystem', 'off'); // será ajustado após overrides
   set('naming', a.branding?'on':'off');
   set('identidade', a.branding?'on':'off');
 
   // Delivery
   set('descricao', O>=3?'on':'off');
   set('regras', O>=3?'on':'off');
+  // Plano de Tagueamento para Analytics
+  if(a.cat==='C') set('tagueamento','on');
+  else if(a.cat==='D' && a.dev) set('tagueamento','on');
+  else if(a.cat==='D' && !a.dev) set('tagueamento','off',true);
+  else if(a.cat==='E' && a.preexist==='novo') set('tagueamento','on');
+  else if(['E2','E4','E5'].includes(a.code)) set('tagueamento','off',true);
+  else set('tagueamento','off');
   set('prototipo', O>=3?'on':(O===2?'opt':'off'));
+  // Teste de Usabilidade de Nova Solução: nunca recomendado; def em B, C, D, E
+  set('usabnova', 'off', ['B','C','D','E'].includes(a.cat));
 
   // Implementação
   ['techresearch','sysarch','infra','frontend','backend','doctec'].forEach(id=>set(id, a.dev?'on':'off'));
+  // Technical Research: def em projetos de design (C, D, E) sem dev
+  if(!a.dev && ['C','D','E'].includes(a.cat)) set('techresearch','off',true);
 
   // Projetos de funcionalidade específica / incremento pontual (scope feature):
   // descoberta enxuta (só Descoberta Pocket; usabilidade pedindo revisão) e poda de processos estruturais.
   if(a.scope==='feature'){
-    // Descoberta em features: no máximo Descoberta Pocket, e só quando há descoberta a fazer.
-    // Single feature bem definida (hasRV falso, não-multifeature) → nada de descoberta.
     const isMultiFeat = a.multifeat || a.code==='E5' || a.code==='E6';
     const featDiscovery = isMultiFeat || a.hasRV;
     set('poket', featDiscovery ? 'on' : 'off');
-    ['imersao','geradoras','benchmarking','research','jornada','metricas'].forEach(id=>set(id,'off'));
-    set('usabilidade','off', featDiscovery); // "definição necessária" só quando há descoberta
-    // não se aplicam a features: arquitetura, lista de telas, arquitetura de sistema, infra/deploy,
-    // regras de negócio, ux writing e painel admin
+    // Mata descoberta completa; Product Analytics sobrevive para features de produtos existentes
+    ['imersao','generativas','benchmarking','research','jornada','heuristica'].forEach(id=>set(id,'off'));
+    if(a.preexist!=='existente') set('metricas','off');
+    set('usabilidade','off', featDiscovery);
     ['arquitetura','telas','sysarch','infra','regras','uxwriting','admin'].forEach(id=>set(id,'off'));
   }
 
@@ -1068,12 +2570,16 @@ function recommend(a){
   const ov = TYPE_OVERRIDES[a.code];
   if(ov) Object.keys(ov).forEach(id=>{ if(r[id]) r[id].state=ov[id]; else r[id]={state:ov[id],def:false}; });
 
+  // Design System / Library: depende do estado final de layouts e happypath (após overrides)
+  if(r.layouts && r.layouts.state==='on') set('designsystem','on');
+  else if(r.happypath && r.happypath.state==='on') set('designsystem','off',true);
+
   return r;
 }
 const TYPE_OVERRIDES = {
-  A3: { keyfeatures:'on' },                                  // Estratégia de Produto
+  A3: { keyfeatures:'on' },
   B3: { keyfeatures:'on', backlog:'on', arquitetura:'on', cardsort:'on', userflows:'on',
-        wireframes:'on', telas:'on', concept:'off', happypath:'on', prototipo:'on' },  // Business Design
+        wireframes:'on', telas:'on', concept:'off', happypath:'on', prototipo:'on' },
 };
 
 /* ============================================================
@@ -1114,7 +2620,7 @@ function initState(key, rec){
 
 /* grupos de exclusividade */
 const EXCL_TRIPLE = ['concept','happypath','layouts'];       // no máximo um
-const POCKET_GROUP = ['imersao','geradoras','benchmarking','research','jornada']; // vs pocket
+const POCKET_GROUP = ['imersao','generativas','benchmarking','research','jornada']; // vs pocket
 function applyExclusivity(st, id, nowOn){
   if(nowOn && EXCL_TRIPLE.includes(id)) EXCL_TRIPLE.forEach(o=>{ if(o!==id) st[o]=false; });
   if(nowOn && id==='poket') POCKET_GROUP.forEach(o=> st[o]=false);
@@ -1141,9 +2647,8 @@ function renderChecklist(rec, state, key){
       const meta=rec[id]; const on=state[id]; const rec_=meta.def; const dis=isDisabled(id,state);
       const flags=[];
       if(!on && rec_) flags.push('<span class="tiny rec">definição necessária</span>');
-      else if(!on && meta.state==='opt') flags.push('<span class="tiny opt">sem recomendação</span>');
       const cls = (on?'on':(rec_?'off rec':'off')) + (dis?' disabled':'');
-      const q = PROC_DESC[id] ? `<span class="qmark" title="${esc(PROC_DESC[id])}">?</span>` : '';
+      const q = PROC_DESC[id] ? `<span class="qmark" data-desc="${escAll(PROC_DESC[id])}">?</span>` : '';
       html += `<div class="proc ${cls}" data-key="${key}" data-id="${id}">
         <span class="dot"></span><span class="label">${label}</span>${q}
         <span class="flags">${flags.join('')}</span></div>`;
@@ -1152,10 +2657,25 @@ function renderChecklist(rec, state, key){
   });
   return html;
 }
+function toggleQmarkTip(el){
+  const existing=el.querySelector('.qmark-tip');
+  // close any other open tips
+  document.querySelectorAll('.qmark-tip').forEach(t=>t.remove());
+  if(existing) return; // was open, now closed
+  const desc=el.dataset.desc; if(!desc) return;
+  const tip=document.createElement('span');
+  tip.className='qmark-tip'; tip.textContent=desc;
+  el.appendChild(tip);
+  // close on next click anywhere
+  setTimeout(()=>{
+    const close=()=>{ tip.remove(); document.removeEventListener('click',close,true); };
+    document.addEventListener('click',close,true);
+  },0);
+}
 function bindChecklist(root){
   root.querySelectorAll('.proc').forEach(el=>{
     el.addEventListener('click',(ev)=>{
-      if(ev.target.classList.contains('qmark')) return;
+      if(ev.target.closest('.qmark')){ toggleQmarkTip(ev.target.closest('.qmark')); return; }
       if(el.classList.contains('disabled')) return;
       const k=el.dataset.key, id=el.dataset.id;
       const nowOn = !userState[k][id];
@@ -1256,12 +2776,8 @@ let BLURBS = {}; // overrides editados pelo admin
 function blurbOf(code){ return (code in BLURBS) ? BLURBS[code] : (BUNDLE_BLURB[code]||''); }
 function escText(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function setBlurb(code, text){ BLURBS[code]=text; saveBlurbs(); }
-async function saveBlurbs(){ try{ if(typeof window!=='undefined' && window.storage) await window.storage.set('bundle_blurbs', JSON.stringify(BLURBS), true); }catch(e){} }
-async function loadBlurbs(){ try{ if(typeof window!=='undefined' && window.storage){
-  let r=null; try{ r=await window.storage.get('bundle_blurbs', true); }catch(e){ r=null; }
-  if(!(r&&r.value)){ try{ const priv=await window.storage.get('bundle_blurbs', false); if(priv&&priv.value){ await window.storage.set('bundle_blurbs', priv.value, true); r=priv; } }catch(e){} }
-  if(r&&r.value) BLURBS=JSON.parse(r.value);
-} }catch(e){} }
+async function saveBlurbs(){ try{ if(typeof window!=='undefined' && window.storage) await window.storage.set('bundle_blurbs', JSON.stringify(BLURBS), false); }catch(e){} }
+async function loadBlurbs(){ try{ if(typeof window!=='undefined' && window.storage){ const r=await window.storage.get('bundle_blurbs'); if(r&&r.value) BLURBS=JSON.parse(r.value); } }catch(e){} }
 
 function toggleType(code){
   const row=document.querySelector(`.type-row[data-code="${code}"]`);
@@ -1513,6 +3029,7 @@ function renderFicha(){
   renderFunnel();
   const stage=document.getElementById('wiz-stage');
   stage.innerHTML=`
+    <div class="ficha-layout">
     <div class="ficha" style="border-top:4px solid ${FC.c}">
       <div class="ficha-top" style="background:linear-gradient(180deg,${FC.c}22,var(--card))">
         <div class="k" style="color:${FC.c}">Ficha do projeto · tipo identificado</div>
@@ -1535,11 +3052,11 @@ function renderFicha(){
         <div class="checklist">${renderChecklist(rec,state,key)}</div>
         <div id="detail-panel"></div>
         <div class="wiz-nav">
-          <button class="btn" onclick="wizBack()">← Ajustar respostas</button>
-          <button class="btn primary" onclick="detalhar('${key}')">Detalhar projeto →</button>
-          <button class="btn" onclick="wizReset()">↺ Reiniciar funil</button>
+          <button class="btn" onclick="wizReset()">↺ Reiniciar Wizard</button>
+          <button class="btn primary" onclick="startSabatina('${key}')">Prosseguir com abordagem →</button>
         </div>
       </div>
+    </div>
     </div>`;
   bindChecklist(stage);
 }
@@ -1555,8 +3072,8 @@ function detalhar(key){
   const total=selected.reduce((n,[,it])=>n+it.length,0);
   const panel=document.getElementById('detail-panel');
   panel.innerHTML=`
-    <div style="margin-top:26px;border:1px dashed var(--line-strong);border-radius:14px;padding:22px;background:rgba(244,244,238,.04)">
-      <h3 style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">Próximo passo · detalhamento</h3>
+    <div style="margin-top:26px;border:1px dashed var(--line-strong);border-radius:14px;padding:22px;background:rgba(20,20,20,.04)">
+      <h3 style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-bottom:8px">Próximo passo · detalhamento</h3>
       <p style="color:var(--ink-soft);font-size:14px;margin:0 0 16px">Cada um dos <b>${total} processos selecionados</b> será expandido em suas tarefas, com requisitos (reqs) e critérios de avaliação (evals). Esta é a base que vamos detalhar em seguida:</p>
       ${selected.map(([fase,items])=>`
         <div style="margin-bottom:12px">
@@ -1571,25 +3088,33 @@ function detalhar(key){
    9. TABS + boot
    ============================================================ */
 function setTab(t){
+  const pd=document.getElementById('view-pd'); if(pd) pd.classList.remove('active');
+  const sb=document.getElementById('view-sab'); if(sb) sb.classList.remove('active');
   ['wiz','cat','proc','re','found'].forEach(x=>{
-    document.getElementById('view-'+x).classList.toggle('active', t===x);
-    document.getElementById('tab-'+x).classList.toggle('active', t===x);
+    const v=document.getElementById('view-'+x); if(v) v.classList.toggle('active', t===x);
+    const b=document.getElementById('tab-'+x); if(b) b.classList.toggle('active', t===x);
   });
   if(t==='re') renderRE();
   if(t==='found') bootFoundations();
 }
 function renderProcesses(){
   const el=document.getElementById('proc-list'); if(!el) return;
-  let html=``;
+  let html=`<div class="est-hint">Tempos em <b>horas</b> úteis (1 dia = 8h), por projeto completo. <b>Somente leitura</b> — a edição é feita na planilha do Google Sheets.
+    <span class="est-actions">
+      <button class="btn sm" onclick="exportEstimates()">Exportar</button>
+    </span></div>`;
   PHASES.forEach(ph=>{
     html+=`<div class="proc-phase"><div class="proc-phase-head"><h2 class="proc-phase-name">${ph.name}</h2><div class="est-cols"><span title="trabalho 100% humano">💪</span><span title="trabalho assistido por IA">🦾</span></div></div>`;
     ph.procs.forEach(([id,label])=>{
       const d=PROC_DESC[id]||''; const e=estGet(id); const n=atomsGet(id).length;
+      const cls = n ? 'bright' : 'dim';
+      const tip = n ? 'Ver descrição, átomos, requisitos e evals' : 'Ver descrição (sem conteúdo detalhado ainda)';
+      const nameHtml = `<a class="proc-open ${cls}" onclick="openProcPage('${id}')" title="${tip}">${label}</a>`;
       html+=`<div class="proc-item">
-        <div class="proc-item-main"><div class="proc-item-name"><a class="proc-open" onclick="openProcDetail('${id}')" title="Editar átomos, requisitos e evals">${label}</a>${n?`<span class="proc-count">${n} átomo${n>1?'s':''}</span>`:''}</div>${d?`<div class="proc-item-desc">${d}</div>`:''}</div>
+        <div class="proc-item-main"><div class="proc-item-name">${nameHtml}</div>${d?`<div class="proc-item-desc">${d}</div>`:''}</div>
         <div class="est-inputs">
-          <input class="est-h" type="number" min="0" step="0.5" value="${e.h??''}" placeholder="–" oninput="setEst('${id}','h',this.value)" aria-label="Horas 100% humano de ${label}">
-          <input class="est-ai" type="number" min="0" step="0.5" value="${e.ai??''}" placeholder="–" oninput="setEst('${id}','ai',this.value)" aria-label="Horas assistido por IA de ${label}">
+          <span class="est-val h" title="horas 100% humano">${e.h!=null?e.h:'–'}</span>
+          <span class="est-val ai" title="horas assistido por IA">${e.ai!=null?e.ai:'–'}</span>
         </div></div>`;
     });
     html+=`</div>`;
@@ -1597,32 +3122,625 @@ function renderProcesses(){
   el.innerHTML=html;
 }
 /* ============================================================
-   10. FOUNDATIONS ENGINE — vertical slice
+   SABATINA — Descoberta de Contexto (AI-powered)
+   ============================================================ */
+const SAB_STEPS=[
+  {id:1,name:'Descrição da Demanda'},
+  {id:2,name:'Objetivos, Premissas e Requisitos'},
+  {id:3,name:'Contexto da Organização'},
+  {id:4,name:'Contexto do Mercado'},
+  {id:5,name:'Público e Proto-personas'},
+  {id:6,name:'Artefatos e Outros Fatos'},
+  {id:7,name:'Matriz CSD'},
+];
+const SAB={key:null,classification:null,wizAnswers:null,selectedProcs:null,projectBullets:null,
+  thread:[],currentStep:0,csdItems:[],finalReport:null,files:[],loading:false,error:null,phase:'interview',
+  apiKey:null,needsKey:false};
+try{SAB.apiKey=sessionStorage.getItem('outrai_api_key')||null;}catch(e){}
+
+function startSabatina(key){
+  const a=classify(wiz.ans);
+  SAB.key=key; SAB.classification=a; SAB.wizAnswers={...wiz.ans}; SAB.projectBullets=describe(a,a.title);
+  const st=userState[key]||{}; const selected=[];
+  PHASES.forEach(ph=>{
+    const items=ph.procs.filter(([id])=>st[id]).map(([id,l])=>({id,label:l,desc:PROC_DESC[id]||''}));
+    if(items.length) selected.push({phase:ph.name,items});
+  });
+  SAB.selectedProcs=selected;
+  SAB.thread=[]; SAB.currentStep=1; SAB.csdItems=[]; SAB.finalReport=null;
+  SAB.files=[]; SAB.loading=false; SAB.error=null; SAB.phase='interview';
+  showSabView(); sabAskNext();
+}
+function showSabView(){
+  ['wiz','cat','proc','re'].forEach(x=>{
+    document.getElementById('view-'+x).classList.remove('active');
+    document.getElementById('tab-'+x).classList.remove('active');
+  });
+  const pd=document.getElementById('view-pd'); if(pd) pd.classList.remove('active');
+  document.getElementById('view-sab').classList.add('active');
+  renderSab(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function buildSabSystemPrompt(){
+  const a=SAB.classification, ans=SAB.wizAnswers;
+  const wizCtx=[];
+  if(ans.abrangencia) wizCtx.push('Abrangência: '+ans.abrangencia);
+  if(ans.multifeat) wizCtx.push('Amplitude: '+(ans.multifeat==='varias'?'várias funcionalidades':'uma funcionalidade'));
+  if(ans.preexist) wizCtx.push('Pré-existência: '+(ans.preexist==='novo'?'novo, do zero':'já existe'));
+  if(ans.tipoProduto) wizCtx.push('Tipo de produto: '+ans.tipoProduto);
+  if(ans.ambicao) wizCtx.push('Ambição: '+ans.ambicao);
+  if(ans.definido) wizCtx.push('Definição prévia: '+(ans.definido==='sim'?'sim, bem definido':'ainda não definido'));
+  if(ans.output) wizCtx.push('Output esperado: '+ans.output);
+  if(ans.branding) wizCtx.push('Branding: '+(ans.branding==='sim'?'com branding':'sem branding'));
+  const procCtx=SAB.selectedProcs.map(g=>g.phase+': '+g.items.map(i=>i.label).join(', ')).join('\n');
+  const qaCtx=SAB.thread.filter(m=>m.role==='ai'||m.role==='human').map(m=>
+    m.role==='ai'?'[Pergunta - Passo '+m.step+' ('+m.stepName+')]: '+m.text:'[Resposta do usuário]: '+m.text
+  ).join('\n');
+  const filesCtx=SAB.files.length?'\nArquivos referenciados: '+SAB.files.map(f=>f.name).join(', '):'';
+  return `Você é o facilitador da Sabatina de Descoberta de Contexto para a outrai — uma ferramenta de escopo de projetos de produto digital.
+
+## Contexto do Projeto (definido pelo usuário no wizard anterior)
+- Abordagem identificada: ${a.title} (código ${a.code})
+- Descrição:
+${SAB.projectBullets.map(b=>'  - '+b).join('\n')}
+- Respostas do wizard:
+${wizCtx.map(w=>'  - '+w).join('\n')}
+- Processos selecionados:
+${procCtx}${filesCtx}
+
+## Seu papel
+Conduza uma entrevista de descoberta de contexto seguindo o roteiro de 7 passos. Faça UMA PERGUNTA POR VEZ e espere a resposta.
+
+## Regras fundamentais
+1. Você PODE agrupar sub-perguntas de um mesmo passo ou reordenar, se fizer mais sentido lógico.
+2. Articule CADA pergunta de forma maximamente contextual — use o tipo de projeto, tipo de produto e respostas anteriores na formulação. Ex: "Qual o público primário do seu ${ans.tipoProduto||'produto'} para [mercado mencionado]?" em vez de "Qual o público primário?".
+3. SUBTRAIA perguntas cujas respostas já são conhecidas.
+4. Se o usuário resistir a recortar escopo, empurre UMA VEZ, depois respeite.
+5. Se disser "não sei", registre em notes como dúvida ou suposição e siga.
+6. Fale em português brasileiro, direto e claro.
+
+## Roteiro
+1. **Descrição da Demanda**: Peça ao usuário que descreva a demanda em texto curto. Pode mudar depois, mas deve articular como a enxerga agora.
+2. **Objetivos, Premissas e Requisitos**: Objetivos do projeto, KPIs, premissas técnicas, de governança e de negócio.
+3. **Contexto da Organização**: Stand-alone ou integrada; recursos financeiros/materiais/humanos; prazo; significado para a organização; responsáveis pelo projeto e operação futura.
+4. **Contexto do Mercado**: Mercado de inserção, grandes números, tendências, concorrentes e substitutos, preços praticados.
+5. **Público e Proto-personas**: Público primário e secundários, cortes demográficos/comportamentais, 2-6 categorias de usuários, impacto na jornada/percepção/resultados, dados numéricos e percepções.
+6. **Artefatos e Outros Fatos**: Peça quaisquer trabalhos, artefatos ou insumos úteis para a demanda (documentos, pesquisas anteriores, protótipos, etc.). Pergunte também se há informações, fatos, restrições ou contextos adicionais que ainda não foram mencionados e que podem ser relevantes para o projeto.
+
+Avance de passo quando tiver informação suficiente. NÃO precisa fazer todas as sub-perguntas.
+
+## Conversa até agora
+${qaCtx||'(nenhuma — esta é a primeira pergunta)'}
+
+## Passo atual: ${SAB.currentStep} de 6.
+
+## Formato de resposta
+Responda EXCLUSIVAMENTE em JSON válido, sem markdown, sem backticks:
+
+Para perguntas (passos 1-6):
+{"step":N,"stepName":"nome","question":"sua pergunta contextualizada","notes":[]}
+
+Quando TODOS os 6 passos estiverem completos, responda com a Matriz CSD:
+{"step":7,"stepName":"Matriz CSD","csdItems":[{"text":"afirmação curta e assertiva","suggestedType":"C ou S ou D"}],"notes":[]}
+Gere entre 12 e 25 itens de CSD extraídos das respostas.`;
+}
+
+function sabParseJSON(raw){
+  let s=raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+  const i=s.indexOf('{');
+  if(i<0) throw new Error('No JSON object found in response');
+  s=s.slice(i);
+  // Fix trailing commas before ] or }
+  const fixTC=t=>t.replace(/,\s*([\]}])/g,'$1');
+  // Fix newlines inside strings
+  const fixNL=t=>t.replace(/"([^"\\]*(?:\\.[^"\\]*)*)"/g,(_,m)=>'"'+m.replace(/\n/g,'\\n').replace(/\r/g,'')+'"');
+  // Close unclosed brackets
+  const closeBrackets=t=>{let ob=0,os=0,inS=false,esc=false;for(const c of t){if(esc){esc=false;continue;}if(c==='\\'){esc=true;continue;}if(c==='"'){inS=!inS;continue;}if(inS)continue;if(c==='{')ob++;if(c==='}')ob--;if(c==='[')os++;if(c===']')os--;}while(os>0){t+=']';os--;}while(ob>0){t+='}';ob--;}return t;};
+  // Try 1: as-is
+  try{return JSON.parse(fixTC(fixNL(s)));}catch(e){}
+  // Try 2: truncate to last } or ] and close brackets
+  for(let k=s.length-1;k>0;k--){
+    if(s[k]==='}'||s[k]===']'){
+      const attempt=closeBrackets(fixTC(s.slice(0,k+1)));
+      try{return JSON.parse(attempt);}catch(e){}
+    }
+  }
+  throw new Error('Could not parse JSON from API response');
+}
+async function sabCallAPI(systemPrompt,userMsg,maxTokens){
+  const messages=[{role:'user',content:userMsg||'Comece a sabatina.'}];
+  const headers={'Content-Type':'application/json'};
+  if(SAB.apiKey){headers['x-api-key']=SAB.apiKey;headers['anthropic-version']='2023-06-01';headers['anthropic-dangerous-direct-browser-access']='true';}
+  const response=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers,
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:maxTokens||4096,system:systemPrompt,messages})
+  });
+  if(!response.ok){const t=await response.text(); throw new Error('API '+response.status+': '+t.slice(0,200));}
+  const data=await response.json();
+  if(data.stop_reason==='max_tokens') console.warn('Sabatina: resposta truncada (max_tokens)');
+  const text=data.content.filter(i=>i.type==='text').map(i=>i.text).join('');
+  return sabParseJSON(text);
+}
+
+async function sabAskNext(){
+  SAB.loading=true; SAB.error=null; renderSab();
+  try{
+    const prompt=buildSabSystemPrompt();
+    const lastAnswer=SAB.thread.length>0?SAB.thread.filter(m=>m.role==='human').map(m=>m.text).join('\n\n')||'Inicie':'Inicie a sabatina com a primeira pergunta.';
+    const result=await sabCallAPI(prompt,lastAnswer);
+    SAB.needsKey=false;
+    if(result.step===7&&result.csdItems){
+      SAB.phase='csd'; SAB.currentStep=7;
+      SAB.csdItems=result.csdItems.filter(item=>item.text&&item.text.trim()).map((item,i)=>({id:i,text:item.text.trim(),suggestedType:item.suggestedType,type:item.suggestedType||null}));
+      if(result.notes&&result.notes.length) result.notes.filter(n=>n.text&&n.text.trim()).forEach(n=>{
+        SAB.csdItems.push({id:SAB.csdItems.length,text:n.text.trim(),suggestedType:n.type==='duvida'?'D':'S',type:n.type==='duvida'?'D':'S'});
+      });
+    }else{
+      SAB.currentStep=result.step||SAB.currentStep;
+      SAB.thread.push({role:'ai',text:result.question,step:result.step,stepName:result.stepName});
+      if(result.notes&&result.notes.length) result.notes.forEach(n=>SAB.thread.push({role:'note',text:n.text,type:n.type}));
+    }
+  }catch(err){
+    const msg=err.message||'';
+    if(msg.includes('Failed to fetch')||msg.includes('NetworkError')||msg.includes('API 401')){
+      SAB.needsKey=true;
+      SAB.error='Não foi possível conectar à API Anthropic. Se estiver rodando localmente, cole sua API key abaixo.';
+    }else{
+      SAB.error='Erro na chamada à IA: '+msg;
+    }
+  }
+  SAB.loading=false; renderSab();
+  setTimeout(()=>{const b=document.getElementById('sab-body');if(b)b.scrollIntoView({behavior:'smooth',block:'end'});},100);
+}
+
+function sabSubmitAnswer(){
+  const ta=document.getElementById('sab-textarea');
+  if(!ta||!ta.value.trim()) return;
+  SAB.thread.push({role:'human',text:ta.value.trim(),step:SAB.currentStep});
+  renderSab(); sabAskNext();
+}
+function sabSubmitCSD(){
+  const un=SAB.csdItems.filter(i=>!i.type);
+  if(un.length){alert('Ainda há '+un.length+' '+(un.length===1?'item':'itens')+' sem classificação.');return;}
+  SAB.phase='report'; sabGenerateReport();
+}
+function sabSetCSD(idx,type){ SAB.csdItems[idx].type=type; renderSab(); }
+
+async function sabGenerateReport(){
+  SAB.loading=true; SAB.error=null; renderSab();
+  try{
+    const a=SAB.classification, st=userState[SAB.key]||{};
+    const certezas=SAB.csdItems.filter(i=>i.type==='C').map(i=>i.text);
+    const suposicoes=SAB.csdItems.filter(i=>i.type==='S').map(i=>i.text);
+    const duvidas=SAB.csdItems.filter(i=>i.type==='D').map(i=>i.text);
+    const allProcs=[]; PHASES.forEach(ph=>ph.procs.forEach(([id,label])=>allProcs.push({id,label,phase:ph.name,selected:!!st[id]})));
+    const qaText=SAB.thread.filter(m=>m.role==='ai'||m.role==='human').map(m=>m.role==='ai'?'P: '+m.text:'R: '+m.text).join('\n');
+    const rp=`Analise a sabatina de descoberta para "${a.title}" (${a.code}).
+
+## Conversa
+${qaText}
+
+## Matriz CSD
+Certezas: ${certezas.map(c=>'\n- '+c).join('')||'(nenhuma)'}
+Suposições: ${suposicoes.map(s=>'\n- '+s).join('')||'(nenhuma)'}
+Dúvidas: ${duvidas.map(d=>'\n- '+d).join('')||'(nenhuma)'}
+
+## Processos disponíveis (marcados ou não)
+${allProcs.map(p=>'- '+p.id+': ['+p.phase+'] '+p.label+(p.selected?' ✓':'')).join('\n')}
+
+## REGRAS CRÍTICAS para recomendações
+1. "concept", "happypath" e "layouts" são ALTERNATIVAS MUTUAMENTE EXCLUSIVAS de escopo visual. "layouts" é o mais completo e já inclui concept e happy path. "happypath" inclui concept. NUNCA recomende mais de um deles. Se "layouts" já está selecionado, NÃO recomende "concept" nem "happypath".
+2. Só recomende adicionar ou remover processos se houver uma razão CONCRETA baseada nas respostas da sabatina. Se a abordagem original é adequada, retorne recommendations como array vazio.
+3. Use os IDs exatos dos processos listados acima.
+
+Gere JSON com:
+1) gaps: lacunas de informação que precisam ser preenchidas, com justificativa. Se não houver lacunas relevantes, array vazio.
+2) recommendations: APENAS mudanças realmente justificadas pelo contexto levantado. Cada item: procId, action (add/remove), label, why, checked (true/false). Se nada precisa mudar, array vazio [].
+
+Responda EXCLUSIVAMENTE em JSON: {"gaps":[{"text":"...","why":"..."}],"recommendations":[]}`;
+    SAB.finalReport=await sabCallAPI(rp,'Gere o relatório final.',8192);
+  }catch(err){ SAB.error='Erro ao gerar relatório: '+err.message; }
+  SAB.loading=false; renderSab();
+}
+
+async function sabSave(){
+  try{if(typeof window!=='undefined'&&window.storage){
+    await window.storage.set('sabatina:'+SAB.key,JSON.stringify({key:SAB.key,thread:SAB.thread,csdItems:SAB.csdItems,finalReport:SAB.finalReport,files:SAB.files,timestamp:Date.now()}));
+  }}catch(e){}
+}
+function sabAddFile(){
+  const input=document.getElementById('sab-file-input'); if(!input||!input.files.length) return;
+  Array.from(input.files).forEach(f=>SAB.files.push({name:f.name,size:f.size,type:f.type}));
+  input.value=''; renderSab();
+}
+function sabRemoveFile(idx){ SAB.files.splice(idx,1); renderSab(); }
+function sabBack(){
+  if(SAB.phase==='csd'){SAB.phase='interview';SAB.currentStep=6;renderSab();}
+  else if(SAB.phase==='report'){SAB.phase='csd';renderSab();}
+  else{setTab('wiz');renderFicha();}
+}
+function sabRetry(){ SAB.error=null; sabAskNext(); }
+function sabSaveKey(){
+  const input=document.getElementById('sab-apikey-input');
+  if(!input||!input.value.trim()) return;
+  SAB.apiKey=input.value.trim();
+  try{sessionStorage.setItem('outrai_api_key',SAB.apiKey);}catch(e){}
+  SAB.error=null; SAB.needsKey=false;
+  sabAskNext();
+}
+function sabClearKey(){
+  SAB.apiKey=null; SAB.needsKey=false;
+  try{sessionStorage.removeItem('outrai_api_key');}catch(e){}
+  renderSab();
+}
+function escSab(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\n/g,'<br>');}
+
+function renderSab(){
+  const body=document.getElementById('sab-body'); if(!body) return;
+  const header=document.getElementById('sab-header');
+  const stepName=SAB_STEPS[SAB.currentStep-1]?SAB_STEPS[SAB.currentStep-1].name:'';
+  const phaseTitle=SAB.phase==='csd'?'Matriz CSD':SAB.phase==='report'?'Pronto para Iniciar ;)':stepName;
+  const hasRecs=SAB.finalReport&&SAB.finalReport.recommendations&&SAB.finalReport.recommendations.length>0;
+  const phaseDesc=SAB.phase==='csd'?'Classifique cada afirmação como Certeza, Suposição ou Dúvida.'
+    :SAB.phase==='report'?(hasRecs?'Revise o contexto, as lacunas e as recomendações de ajuste abaixo antes de iniciar o projeto.':'Revise o contexto e as lacunas abaixo antes de iniciar o projeto.')
+    :'Responda à pergunta abaixo para aprofundar o entendimento do projeto.';
+  const eyebrowLabel=SAB.phase==='report'?'Finalização de Briefing':'Passo '+SAB.currentStep+' de 7 · Descoberta de Contexto';
+  const eyebrowStyle=SAB.phase==='report'?' style="color:var(--accent)"':'';
+  if(header) header.innerHTML='<div class="eyebrow"'+eyebrowStyle+'>'+escSab(eyebrowLabel)+'</div><h1>'+escSab(phaseTitle)+'</h1><p>'+escSab(phaseDesc)+'</p>';
+  let h='<div class="sab-progress">';
+  for(let i=1;i<=7;i++){const cls=i<SAB.currentStep?'done':(i===SAB.currentStep?'cur':'');h+='<div class="sab-step '+cls+'"></div>';}
+  h+='</div>';
+  if(SAB.phase==='interview') h+=renderSabInterview();
+  else if(SAB.phase==='csd') h+=renderSabCSD();
+  else if(SAB.phase==='report') h+=renderSabReport();
+  body.innerHTML=h;
+  const ta=document.getElementById('sab-textarea'); if(ta) setTimeout(()=>ta.focus(),100);
+  const ki=document.getElementById('sab-apikey-input'); if(ki) setTimeout(()=>ki.focus(),100);
+}
+function renderSabInterview(){
+  let h='';
+  // Get the current (last) AI question
+  const aiMsgs=SAB.thread.filter(m=>m.role==='ai');
+  const currentQ=aiMsgs.length>0?aiMsgs[aiMsgs.length-1]:null;
+
+  if(SAB.loading){
+    h+='<div style="padding:40px 0"><div class="sab-loading"><span class="dot"></span> Gerando pergunta…</div></div>';
+    return h;
+  }
+
+  // API key prompt
+  if(SAB.needsKey){
+    h+='<div class="sab-error">'+escSab(SAB.error)+'</div>';
+    h+='<div class="sab-input" style="margin-top:12px">';
+    h+='<div style="display:flex;gap:8px;align-items:flex-end">';
+    h+='<div style="flex:1"><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Anthropic API Key</label>';
+    h+='<input id="sab-apikey-input" type="password" placeholder="sk-ant-..." value="'+(SAB.apiKey||'')+'" style="width:100%;padding:10px 14px;border:1.5px solid var(--line-strong);border-radius:10px;background:var(--card);color:var(--ink);font-family:var(--mono);font-size:13px;" onkeydown="if(event.key===\'Enter\')sabSaveKey()"></div>';
+    h+='<button class="btn primary" onclick="sabSaveKey()" style="white-space:nowrap">Conectar →</button></div>';
+    h+='<div style="font-size:11px;color:var(--muted);margin-top:6px">A chave fica apenas nesta aba (sessionStorage). Não é enviada para nenhum servidor além da API Anthropic.</div>';
+    h+='</div>';
+    return h;
+  }
+
+  // Generic error
+  if(SAB.error){
+    h+='<div class="sab-error">'+escSab(SAB.error)+'<br><button class="btn sm" onclick="sabRetry()">Tentar novamente</button></div>';
+    return h;
+  }
+
+  // Show current question + input
+  if(currentQ){
+    h+='<div class="sab-bubble ai" style="max-width:100%;font-size:16px;line-height:1.65;margin-bottom:24px">'+escSab(currentQ.text)+'</div>';
+    h+='<div class="sab-input">';
+    h+='<textarea id="sab-textarea" placeholder="Escreva sua resposta…" rows="5" onkeydown="if(event.key===\'Enter\'&&(event.metaKey||event.ctrlKey)){sabSubmitAnswer();event.preventDefault();}"></textarea>';
+    if(SAB.currentStep>=6){
+      h+='<div class="sab-files"><div class="sab-dropzone" onclick="document.getElementById(\'sab-file-input\').click()">📎 Anexar documentos, pesquisas ou outros artefatos<input type="file" id="sab-file-input" multiple onchange="sabAddFile()"></div>';
+      if(SAB.files.length){h+='<div class="sab-file-list">';SAB.files.forEach((f,i)=>{h+='<div class="sab-file-chip">'+escSab(f.name)+' <button onclick="sabRemoveFile('+i+')">✕</button></div>';});h+='</div>';}
+      h+='</div>';
+    }
+    h+='<div class="sab-input-hint">⌘/Ctrl+Enter para enviar'+(SAB.apiKey?' · <a href="#" onclick="sabClearKey();return false" style="color:var(--muted)">limpar API key</a>':'')+'</div>';
+    h+='<div class="sab-nav"><button class="btn" onclick="sabBack()">← Voltar à ficha</button><span class="spacer"></span><button class="btn primary" onclick="sabSubmitAnswer()">Responder →</button></div>';
+    h+='</div>';
+  }
+  return h;
+}
+function renderSabCSD(){
+  let h='<div class="sab-csd-intro">Abaixo estão afirmações extraídas das suas respostas. Classifique cada uma como <b>Certeza</b>, <b>Suposição</b> ou <b>Dúvida</b>. As classificações sugeridas pela IA já estão pré-selecionadas — ajuste o que discordar.</div>';
+  h+='<div class="sab-csd-legend"><span><span class="ck ck-c">C</span> Certeza — fato confirmado</span><span><span class="ck ck-s">S</span> Suposição — hipótese não validada</span><span><span class="ck ck-d">D</span> Dúvida — precisa ser investigada</span></div>';
+  h+='<div class="sab-csd-list">';
+  SAB.csdItems.forEach((item,i)=>{
+    h+='<div class="sab-csd-item"><div class="text">'+escSab(item.text)+'</div><div class="sab-csd-btns">';
+    ['C','S','D'].forEach(t=>{
+      const sel=item.type===t?'sel-'+t.toLowerCase():'';
+      h+='<button class="sab-csd-btn '+sel+'" onclick="sabSetCSD('+i+',\''+t+'\')">'+t+'</button>';
+    });
+    h+='</div></div>';
+  });
+  h+='</div>';
+  h+='<div class="sab-nav"><button class="btn" onclick="sabBack()">← Voltar</button><span class="spacer"></span><button class="btn primary" onclick="sabSubmitCSD()">Gerar Relatório Final →</button></div>';
+  return h;
+}
+function renderSabReport(){
+  let h='';
+  if(SAB.loading){return '<div class="sab-loading"><span class="dot"></span> Gerando relatório final…</div>';}
+  if(SAB.error){return '<div class="sab-error">'+escSab(SAB.error)+'<br><button class="btn sm" onclick="sabGenerateReport()">Tentar novamente</button></div>';}
+  if(!SAB.finalReport) return h;
+  const certezas=SAB.csdItems.filter(i=>i.type==='C');
+  const suposicoes=SAB.csdItems.filter(i=>i.type==='S');
+  const duvidas=SAB.csdItems.filter(i=>i.type==='D');
+  h+='<div class="sab-report">';
+  h+='<div class="sab-report-section"><h3>Contexto — Matriz CSD</h3>';
+  if(certezas.length){h+='<div class="sab-csd-group"><div class="sab-csd-group-title cert">Certezas ('+certezas.length+')</div><ul>';certezas.forEach(c=>{h+='<li>'+escSab(c.text)+'</li>';});h+='</ul></div>';}
+  if(suposicoes.length){h+='<div class="sab-csd-group"><div class="sab-csd-group-title sup">Suposições ('+suposicoes.length+')</div><ul>';suposicoes.forEach(s=>{h+='<li>'+escSab(s.text)+'</li>';});h+='</ul></div>';}
+  if(duvidas.length){h+='<div class="sab-csd-group"><div class="sab-csd-group-title duv">Dúvidas ('+duvidas.length+')</div><ul>';duvidas.forEach(d=>{h+='<li>'+escSab(d.text)+'</li>';});h+='</ul></div>';}
+  h+='</div>';
+  if(SAB.finalReport.gaps&&SAB.finalReport.gaps.length){
+    h+='<div class="sab-report-section gaps"><h3>Lacunas de Informação</h3>';
+    SAB.finalReport.gaps.forEach(g=>{h+='<div class="sab-gap-item"><div>'+escSab(g.text)+'</div><div class="why">'+escSab(g.why)+'</div></div>';});
+    h+='</div>';
+  }
+  if(SAB.finalReport.recommendations&&SAB.finalReport.recommendations.length){
+    h+='<div class="sab-report-section"><h3>Revisão de Recomendações de Processos</h3>';
+    SAB.finalReport.recommendations.forEach(rec=>{
+      const action=rec.action==='add'?'+ Adicionar':'− Remover';
+      const checked=rec.checked!==false?'checked':'';
+      h+='<div class="sab-rec-item"><input type="checkbox" id="sab-rec-'+escSab(rec.procId)+'" '+checked+'><label for="sab-rec-'+escSab(rec.procId)+'"><div class="rec-label">'+action+': '+escSab(rec.label)+'</div><div class="rec-why">'+escSab(rec.why)+'</div></label></div>';
+    });
+    h+='</div>';
+  }
+  h+='</div>';
+  h+='<div class="sab-nav" style="margin-top:26px"><button class="btn" onclick="sabBack()">← Revisar CSD</button><span class="spacer"></span><button class="btn primary" onclick="sabInitProject()">Iniciar Projeto →</button></div>';
+  return h;
+}
+
+function sabInitProject(){
+  // Apply checked recommendations first
+  if(SAB.finalReport&&SAB.finalReport.recommendations){
+    const st=userState[SAB.key]; if(st){
+      SAB.finalReport.recommendations.forEach(rec=>{
+        const cb=document.getElementById('sab-rec-'+rec.procId);
+        if(cb&&cb.checked){ st[rec.procId]=(rec.action==='add'); }
+      });
+    }
+  }
+  sabSave();
+  sabGeneratePDF();
+}
+
+const JSPDF_CDNS=[
+  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js',
+  'https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js',
+  'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js'
+];
+function loadJsPDF(){
+  if(window.jspdf) return Promise.resolve();
+  return new Promise((resolve,reject)=>{
+    let idx=0;
+    function tryNext(){
+      if(idx>=JSPDF_CDNS.length) return reject(new Error('Nao foi possivel carregar jsPDF de nenhum CDN.'));
+      const s=document.createElement('script');
+      s.src=JSPDF_CDNS[idx++];
+      s.onload=()=>window.jspdf?resolve():tryNext();
+      s.onerror=()=>tryNext();
+      document.head.appendChild(s);
+    }
+    tryNext();
+  });
+}
+
+async function sabGeneratePDF(){
+  try{ await loadJsPDF(); }catch(e){ alert('Erro ao carregar biblioteca de PDF: '+e.message); return; }
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'mm',format:'a4'});
+  const W=210,M=20,CW=W-2*M;
+  let y=M;
+  const a=SAB.classification;
+  const st=userState[SAB.key]||{};
+
+  // Derive project name from first human answer (Descrição da Demanda)
+  const firstAnswer=SAB.thread.find(m=>m.role==='human');
+  const projectName=firstAnswer?firstAnswer.text.split(/[.\n]/)[0].trim().slice(0,80):(a.title||'Projeto');
+
+  // Helpers
+  const addPage=()=>{doc.addPage();y=M;};
+  const checkSpace=(need)=>{if(y+need>280){addPage();}};
+  const sectionTitle=(text,r,g,b)=>{checkSpace(14);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(r||40,g||40,b||40);doc.text(text.toUpperCase(),M,y);y+=2;doc.setDrawColor(r||40,g||40,b||40);doc.line(M,y,M+CW,y);y+=8;doc.setTextColor(40,40,40);};
+  const bodyText=(text,indent)=>{
+    indent=indent||0;
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(60,60,60);
+    const lines=doc.splitTextToSize(String(text||''),CW-indent);
+    lines.forEach(line=>{checkSpace(6);doc.text(line,M+indent,y);y+=5;});
+    y+=2;
+  };
+  const bulletItem=(text,indent)=>{
+    indent=indent||0;
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(60,60,60);
+    const lines=doc.splitTextToSize(String(text||''),CW-indent-4);
+    doc.text('\u2022',M+indent,y);
+    lines.forEach((line,i)=>{checkSpace(6);doc.text(line,M+indent+4,y);y+=5;});
+    y+=1;
+  };
+
+  // ===== COVER =====
+  doc.setFillColor(28,26,38);doc.rect(0,0,W,297,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(77,245,160);
+  doc.text('FOUNDATIONS',M,55);
+  doc.setFont('helvetica','bold');doc.setFontSize(24);doc.setTextColor(255,255,255);
+  const coverTitle=doc.splitTextToSize(projectName,CW);
+  coverTitle.forEach((l,i)=>{doc.text(l,M,75+i*11);});
+  const coverTitleEnd=75+coverTitle.length*11+10;
+  doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(150,150,150);
+  doc.text('Abordagem: '+a.title,M,coverTitleEnd);
+  doc.text(new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}),M,coverTitleEnd+8);
+  if(SAB.projectBullets){
+    y=coverTitleEnd+26;doc.setFontSize(10);doc.setTextColor(180,180,180);
+    SAB.projectBullets.forEach(b=>{
+      const lines=doc.splitTextToSize('\u2022 '+b,CW);
+      lines.forEach(l=>{doc.text(l,M,y);y+=6;});
+    });
+  }
+  // Small footer
+  doc.setFontSize(8);doc.setTextColor(80,80,80);
+  doc.text('outrai \u00B7 Escopo de Projeto',M,285);
+
+  // ===== PAGE 2: APPROACH & PROCESSES =====
+  addPage();
+  sectionTitle('Abordagem do Projeto',50,50,50);
+  doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(40,40,40);
+  doc.text(a.title||'',M,y);y+=8;
+  doc.setFont('helvetica','normal');doc.setFontSize(10);
+  if(SAB.projectBullets) SAB.projectBullets.forEach(b=>bulletItem(b));
+  y+=6;
+
+  sectionTitle('Processos Selecionados',50,50,50);
+  PHASES.forEach(ph=>{
+    const items=ph.procs.filter(([id])=>st[id]);
+    if(!items.length) return;
+    checkSpace(12);
+    doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(80,80,80);
+    doc.text(ph.name,M,y);y+=6;
+    items.forEach(([id,label])=>{
+      const est=estGet(id);
+      const hrs=(est.h||0)+(est.ai||0);
+      const suffix=hrs?' ('+hrs+'h)':'';
+      bulletItem(label+suffix,4);
+    });
+    y+=3;
+  });
+
+  // ===== CRONOGRAMA =====
+  checkSpace(40);
+  sectionTitle('Cronograma Estimado',50,50,50);
+  let totalH=0,totalAi=0;
+  const phaseRows=[];
+  PHASES.forEach(ph=>{
+    let phH=0,phAi=0,count=0;
+    ph.procs.forEach(([id])=>{if(!st[id])return; const e=estGet(id); phH+=(e.h||0); phAi+=(e.ai||0); count++;});
+    if(count) phaseRows.push({name:ph.name,h:phH,ai:phAi,total:phH+phAi,count});
+    totalH+=phH; totalAi+=phAi;
+  });
+  // Table header
+  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(100,100,100);
+  doc.text('Fase',M,y); doc.text('Processos',M+90,y); doc.text('Horas Humanas',M+115,y); doc.text('Horas IA',M+145,y); doc.text('Total',M+163,y);
+  y+=2; doc.setDrawColor(180,180,180); doc.line(M,y,M+CW,y); y+=5;
+  // Table rows
+  phaseRows.forEach(r=>{
+    checkSpace(8);
+    doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(60,60,60);
+    doc.text(r.name.length>30?r.name.slice(0,28)+'...':r.name,M,y);
+    doc.text(String(r.count),M+98,y);
+    doc.text(r.h?r.h+'h':'-',M+125,y);
+    doc.text(r.ai?r.ai+'h':'-',M+150,y);
+    doc.text(r.total?r.total+'h':'-',M+165,y);
+    y+=6;
+  });
+  // Total row
+  y+=1; doc.setDrawColor(180,180,180); doc.line(M,y,M+CW,y); y+=5;
+  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(40,40,40);
+  doc.text('TOTAL',M,y);
+  doc.text(totalH?totalH+'h':'-',M+125,y);
+  doc.text(totalAi?totalAi+'h':'-',M+150,y);
+  doc.text((totalH+totalAi)?(totalH+totalAi)+'h':'-',M+165,y);
+  y+=10;
+
+  // ===== SABATINA Q&A =====
+  addPage();
+  sectionTitle('Descoberta de Contexto',50,50,50);
+  const aiMsgs=SAB.thread.filter(m=>m.role==='ai');
+  const humanMsgs=SAB.thread.filter(m=>m.role==='human');
+  aiMsgs.forEach((q,i)=>{
+    checkSpace(18);
+    doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(50,50,50);
+    const qLines=doc.splitTextToSize((q.stepName?q.stepName+': ':'')+q.text,CW);
+    qLines.forEach(l=>{checkSpace(6);doc.text(l,M,y);y+=5;});
+    y+=1;
+    if(humanMsgs[i]){
+      doc.setFont('helvetica','normal');doc.setTextColor(80,80,80);
+      const aLines=doc.splitTextToSize(humanMsgs[i].text,CW-4);
+      aLines.forEach(l=>{checkSpace(6);doc.text(l,M+4,y);y+=5;});
+    }
+    y+=6;
+  });
+
+  // ===== CSD MATRIX =====
+  checkSpace(30);
+  if(y>40) { /* continue on same page if space */ } else addPage();
+  sectionTitle('Matriz CSD',50,50,50);
+  const groups=[
+    {label:'Certezas',items:SAB.csdItems.filter(i=>i.type==='C'),r:30,g:160,b:90},
+    {label:'Suposicoes',items:SAB.csdItems.filter(i=>i.type==='S'),r:160,g:155,b:60},
+    {label:'Duvidas',items:SAB.csdItems.filter(i=>i.type==='D'),r:200,g:100,b:40}
+  ];
+  groups.forEach(grp=>{
+    if(!grp.items.length) return;
+    checkSpace(14);
+    doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(grp.r,grp.g,grp.b);
+    doc.text(grp.label+' ('+grp.items.length+')',M,y);y+=6;
+    doc.setTextColor(60,60,60);
+    grp.items.forEach(item=>{bulletItem(item.text,4);});
+    y+=4;
+  });
+
+  // ===== GAPS =====
+  if(SAB.finalReport&&SAB.finalReport.gaps&&SAB.finalReport.gaps.length){
+    checkSpace(20);
+    sectionTitle('Lacunas de Informacao',200,100,40);
+    SAB.finalReport.gaps.forEach(g=>{
+      checkSpace(14);
+      doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(60,60,60);
+      const gLines=doc.splitTextToSize(String(g.text||''),CW-4);
+      gLines.forEach(l=>{checkSpace(6);doc.text(l,M,y);y+=5;});
+      if(g.why){
+        doc.setFont('helvetica','italic');doc.setFontSize(9);doc.setTextColor(120,120,120);
+        const wLines=doc.splitTextToSize(String(g.why||''),CW-4);
+        wLines.forEach(l=>{checkSpace(5);doc.text(l,M+4,y);y+=4.5;});
+      }
+      y+=4;
+    });
+  }
+
+  // ===== RECOMMENDATIONS APPLIED =====
+  if(SAB.finalReport&&SAB.finalReport.recommendations&&SAB.finalReport.recommendations.length){
+    checkSpace(20);
+    sectionTitle('Ajustes de Processos Aplicados',50,50,50);
+    SAB.finalReport.recommendations.forEach(rec=>{
+      const cb=document.getElementById('sab-rec-'+rec.procId);
+      const applied=cb&&cb.checked;
+      if(!applied) return; // Only show applied changes
+      const action=rec.action==='add'?'Adicionado':'Removido';
+      checkSpace(12);
+      doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(40,40,40);
+      doc.text(action+': '+rec.label,M,y);y+=5;
+      if(rec.why){
+        doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(120,120,120);
+        const wLines=doc.splitTextToSize(String(rec.why||''),CW-8);
+        wLines.forEach(l=>{checkSpace(5);doc.text(l,M+8,y);y+=4.5;});
+      }
+      y+=3;
+    });
+  }
+
+  // ===== DOWNLOAD =====
+  const safeName=projectName.replace(/[^a-zA-Z0-9\u00C0-\u017F\s-]/g,'').replace(/\s+/g,'-').slice(0,50).toLowerCase();
+  const filename='foundations-'+(safeName||a.code||'projeto')+'-'+new Date().toISOString().slice(0,10)+'.pdf';
+  doc.save(filename);
+}
+
+/* ============================================================
+   FOUNDATIONS ENGINE
    ============================================================ */
 const FOUND_BASE = '../foundations/';
-let foundRegistry = null;
-let foundBooted = false;
-let foundCtx = { org: null, prod: null, proj: null };
-let foundActiveSection = null;
+let foundRegistry = null, foundBooted = false, foundCtx = {org:null,prod:null,proj:null}, foundActiveSection = null;
 
-// --- Markdown parser (minimal) ---
 function parseFrontmatter(raw) {
-  const lines = raw.split('\n');
-  const meta = {};
-  let bodyStart = 0;
+  const lines = raw.split('\n'); const meta = {}; let bodyStart = 0;
   if (lines[0] && lines[0].trim() === '---') {
-    for (let i = 1; i < lines.length; i++) {
-      if (lines[i].trim() === '---') { bodyStart = i + 1; break; }
-      const m = lines[i].match(/^(\w[\w-]*):\s*(.*)$/);
-      if (m) meta[m[1]] = m[2].trim();
-    }
+    for (let i = 1; i < lines.length; i++) { if (lines[i].trim() === '---') { bodyStart = i + 1; break; } const m = lines[i].match(/^(\w[\w-]*):\s*(.*)$/); if (m) meta[m[1]] = m[2].trim(); }
   }
   return { meta, body: lines.slice(bodyStart).join('\n').trim() };
 }
-
 function mdToHtml(md) {
   if (!md) return '';
-  let html = md
+  return md
+    .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/^### (.+)$/gm, '<h3>$1</h3>')
     .replace(/^## (.+)$/gm, '<h2>$1</h2>')
     .replace(/^# (.+)$/gm, '<h1>$1</h1>')
@@ -1631,263 +3749,86 @@ function mdToHtml(md) {
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/^- (.+)$/gm, '<li>$1</li>')
     .replace(/(<li>.*<\/li>\n?)+/g, m => '<ul>' + m + '</ul>')
-    .replace(/<!--[\s\S]*?-->/g, '')  // strip HTML comments
-    .replace(/\n{2,}/g, '\n<p></p>\n');
-  // wrap loose text in paragraphs
-  html = html.split('\n').map(line => {
-    const l = line.trim();
-    if (!l) return '';
-    if (l.startsWith('<')) return l;
-    return '<p>' + l + '</p>';
-  }).join('\n');
-  // merge consecutive blockquotes
-  html = html.replace(/<\/blockquote>\s*<blockquote>/g, '<br>');
-  return html;
+    .replace(/<\/blockquote>\s*<blockquote>/g, '<br>')
+    .replace(/\n{2,}/g, '</p><p>')
+    .replace(/^(?!<[hublop])/gm, function(m, o, s) { const line = s.split('\n').find((_, i) => s.split('\n').slice(0, i + 1).join('\n').length >= o); return line && line.trim() && !line.trim().startsWith('<') ? '<p>' : ''; });
 }
-
-// --- Fetch helpers ---
 async function fetchRegistry() {
-  try {
-    const r = await fetch('../registry.json');
-    if (!r.ok) throw new Error(r.status);
-    return await r.json();
-  } catch (e) {
-    console.warn('Foundations: registry.json not found, using empty registry', e);
-    return { organizacoes: {} };
-  }
+  try { const r = await fetch('../registry.json'); if (!r.ok) throw new Error(r.status); return await r.json(); }
+  catch(e) { console.warn('Foundations: registry.json not found', e); return { organizacoes: {} }; }
 }
-
 async function fetchMd(path) {
-  try {
-    const r = await fetch(FOUND_BASE + path);
-    if (!r.ok) throw new Error(`${r.status}: ${path}`);
-    const raw = await r.text();
-    return parseFrontmatter(raw);
-  } catch (e) {
-    console.warn('Foundations: failed to fetch', path, e);
-    return null;
-  }
+  try { const r = await fetch(FOUND_BASE + path); if (!r.ok) throw new Error(`${r.status}: ${path}`); return parseFrontmatter(await r.text()); }
+  catch(e) { console.warn('Foundations: failed to fetch', path, e); return null; }
 }
-
-// --- Context selectors ---
 async function bootFoundations() {
-  if (foundBooted) return;
-  foundBooted = true;
+  if (foundBooted) return; foundBooted = true;
   foundRegistry = await fetchRegistry();
   const orgs = Object.keys(foundRegistry.organizacoes || {});
   const sel = document.getElementById('found-org');
-  orgs.forEach(slug => {
-    const name = foundRegistry.organizacoes[slug].nome || slug;
-    const opt = document.createElement('option');
-    opt.value = slug; opt.textContent = name;
-    sel.appendChild(opt);
-  });
-  // check URL params for auto-selection
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('org')) {
-    sel.value = params.get('org');
-    await onOrgChange();
-    if (params.get('produto')) {
-      document.getElementById('found-prod').value = params.get('produto');
-      await onProdChange();
-      if (params.get('projeto')) {
-        document.getElementById('found-proj').value = params.get('projeto');
-        await onProjChange();
-      }
-    }
-  }
+  orgs.forEach(slug => { const o = document.createElement('option'); o.value = slug; o.textContent = foundRegistry.organizacoes[slug].nome || slug; sel.appendChild(o); });
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('org')) { sel.value = p.get('org'); await onOrgChange(); if (p.get('produto')) { document.getElementById('found-prod').value = p.get('produto'); await onProdChange(); if (p.get('projeto')) { document.getElementById('found-proj').value = p.get('projeto'); await onProjChange(); } } }
 }
-
 async function onOrgChange() {
-  const org = document.getElementById('found-org').value;
-  foundCtx = { org: org || null, prod: null, proj: null };
-  const prodSel = document.getElementById('found-prod');
-  const projSel = document.getElementById('found-proj');
-  prodSel.innerHTML = '<option value="">Selecione...</option>';
-  projSel.innerHTML = '<option value="">Selecione...</option>';
-  prodSel.disabled = !org;
-  projSel.disabled = true;
-  document.getElementById('found-nav').style.display = 'none';
-  document.getElementById('found-content').innerHTML = '';
+  const org = document.getElementById('found-org').value; foundCtx = {org:org||null,prod:null,proj:null};
+  const ps = document.getElementById('found-prod'), js = document.getElementById('found-proj');
+  ps.innerHTML = js.innerHTML = '<option value="">Selecione...</option>'; ps.disabled = !org; js.disabled = true;
+  document.getElementById('found-nav').style.display = 'none'; document.getElementById('found-content').innerHTML = '';
   if (!org) return;
-  const prods = Object.keys(foundRegistry.organizacoes[org]?.produtos || {});
-  prods.forEach(slug => {
-    const name = foundRegistry.organizacoes[org].produtos[slug].nome || slug;
-    const opt = document.createElement('option');
-    opt.value = slug; opt.textContent = name;
-    prodSel.appendChild(opt);
-  });
-  // show org-level foundations
-  await renderFoundationsSections('org');
+  Object.entries(foundRegistry.organizacoes[org]?.produtos || {}).forEach(([slug, d]) => { const o = document.createElement('option'); o.value = slug; o.textContent = d.nome || slug; ps.appendChild(o); });
+  await renderFoundSections('org');
 }
-
 async function onProdChange() {
-  const prod = document.getElementById('found-prod').value;
-  foundCtx.prod = prod || null;
-  foundCtx.proj = null;
-  const projSel = document.getElementById('found-proj');
-  projSel.innerHTML = '<option value="">Selecione...</option>';
-  projSel.disabled = !prod;
-  if (!prod) { await renderFoundationsSections('org'); return; }
-  const projs = Object.keys(foundRegistry.organizacoes[foundCtx.org]?.produtos?.[prod]?.demandas || foundRegistry.organizacoes[foundCtx.org]?.produtos?.[prod]?.projetos || {});
-  projs.forEach(slug => {
-    const data = (foundRegistry.organizacoes[foundCtx.org].produtos[prod].demandas || foundRegistry.organizacoes[foundCtx.org].produtos[prod].projetos || {})[slug];
-    const name = data?.nome || slug;
-    const opt = document.createElement('option');
-    opt.value = slug; opt.textContent = name;
-    projSel.appendChild(opt);
-  });
-  await renderFoundationsSections('prod');
+  const prod = document.getElementById('found-prod').value; foundCtx.prod = prod||null; foundCtx.proj = null;
+  const js = document.getElementById('found-proj'); js.innerHTML = '<option value="">Selecione...</option>'; js.disabled = !prod;
+  if (!prod) { await renderFoundSections('org'); return; }
+  Object.entries(foundRegistry.organizacoes[foundCtx.org]?.produtos?.[prod]?.projetos || {}).forEach(([slug, d]) => { const o = document.createElement('option'); o.value = slug; o.textContent = d.nome || slug; js.appendChild(o); });
+  await renderFoundSections('prod');
 }
+async function onProjChange() { foundCtx.proj = document.getElementById('found-proj').value||null; await renderFoundSections(foundCtx.proj ? 'proj' : 'prod'); }
 
-async function onProjChange() {
-  const proj = document.getElementById('found-proj').value;
-  foundCtx.proj = proj || null;
-  if (!proj) { await renderFoundationsSections('prod'); return; }
-  await renderFoundationsSections('proj');
-}
-
-// --- Section definitions ---
 const FOUND_SECTIONS = {
-  org: {
-    label: 'Contexto Organizacional',
-    path: slug => `organizacoes/${slug}/contexto-organizacional/`,
-    files: [
-      { slug: 'modelos-de-negocio', label: 'Modelos de Negócio' },
-      { slug: 'produtos-canais', label: 'Produtos / Canais' },
-      { slug: 'design-system', label: 'Design System' },
-      { slug: 'estrutura-de-pessoas', label: 'Estrutura de Pessoas' },
-      { slug: 'infra-tecnologica', label: 'Infra Tecnológica' },
-    ]
-  },
-  bases: {
-    label: 'Bases do Produto',
-    path: (org, prod) => `organizacoes/${org}/produtos/${prod}/bases/`,
-    files: [
-      { slug: 'proposta-de-valor', label: 'Proposta de Valor' },
-      { slug: 'premissas-negocio', label: 'Premissas de Negócio' },
-      { slug: 'premissas-tecnologia', label: 'Premissas de Tecnologia' },
-      { slug: 'kpis-metricas', label: 'KPIs e Métricas' },
-      { slug: 'product-backlog', label: 'Product Backlog' },
-    ]
-  },
-  publico: {
-    label: 'Público',
-    path: (org, prod) => `organizacoes/${org}/produtos/${prod}/publico/`,
-    files: [
-      { slug: 'publico-alvo', label: 'Público-Alvo' },
-      { slug: 'personas', label: 'Personas' },
-      { slug: 'pontos-de-dor', label: 'Pontos de Dor' },
-      { slug: 'pesquisas-anteriores', label: 'Pesquisas Anteriores' },
-    ]
-  },
-  mercado: {
-    label: 'Mercado',
-    path: (org, prod) => `organizacoes/${org}/produtos/${prod}/mercado/`,
-    files: [
-      { slug: 'tendencias-transformacoes', label: 'Tendências e Transformações' },
-      { slug: 'concorrentes', label: 'Concorrentes' },
-      { slug: 'analise-competitiva', label: 'Análise Competitiva' },
-    ]
-  },
-  proj: {
-    label: 'Projeto',
-    path: (org, prod, proj) => `organizacoes/${org}/produtos/${prod}/projetos/${proj}/`,
-    files: [
-      { slug: 'abordagem-de-projeto', label: 'Abordagem' },
-      { slug: 'descricao-problema', label: 'Descrição do Problema' },
-      { slug: 'hipoteses-solucao', label: 'Hipóteses de Solução' },
-      { slug: 'responsaveis', label: 'Responsáveis' },
-      { slug: 'metricas', label: 'Métricas' },
-    ]
-  }
+  org: { label:'Contexto Organizacional', path: o => `organizacoes/${o}/contexto-organizacional/`,
+    files:[{s:'modelos-de-negocio',l:'Modelos de Negócio'},{s:'produtos-canais',l:'Produtos / Canais'},{s:'design-system',l:'Design System'},{s:'estrutura-de-pessoas',l:'Estrutura de Pessoas'},{s:'infra-tecnologica',l:'Infra Tecnológica'}]},
+  bases: { label:'Bases do Produto', path: (o,p) => `organizacoes/${o}/produtos/${p}/bases/`,
+    files:[{s:'proposta-de-valor',l:'Proposta de Valor'},{s:'premissas-negocio',l:'Premissas de Negócio'},{s:'premissas-tecnologia',l:'Premissas de Tecnologia'},{s:'kpis-metricas',l:'KPIs e Métricas'},{s:'product-backlog',l:'Product Backlog'}]},
+  publico: { label:'Público', path: (o,p) => `organizacoes/${o}/produtos/${p}/publico/`,
+    files:[{s:'publico-alvo',l:'Público-Alvo'},{s:'personas',l:'Personas'},{s:'pontos-de-dor',l:'Pontos de Dor'},{s:'pesquisas-anteriores',l:'Pesquisas Anteriores'}]},
+  mercado: { label:'Mercado', path: (o,p) => `organizacoes/${o}/produtos/${p}/mercado/`,
+    files:[{s:'tendencias-transformacoes',l:'Tendências'},{s:'concorrentes',l:'Concorrentes'},{s:'analise-competitiva',l:'Análise Competitiva'}]},
+  proj: { label:'Projeto', path: (o,p,j) => `organizacoes/${o}/produtos/${p}/projetos/${j}/`,
+    files:[{s:'abordagem-de-projeto',l:'Abordagem'},{s:'descricao-problema',l:'Problema'},{s:'hipoteses-solucao',l:'Hipóteses'},{s:'responsaveis',l:'Responsáveis'},{s:'metricas',l:'Métricas'}]}
 };
-
-function getSectionsForLevel(level) {
-  if (level === 'org') return ['org'];
-  if (level === 'prod') return ['org', 'bases', 'publico', 'mercado'];
-  if (level === 'proj') return ['org', 'bases', 'publico', 'mercado', 'proj'];
-  return [];
+function levelsFor(l){ return l==='org'?['org']:l==='prod'?['org','bases','publico','mercado']:['org','bases','publico','mercado','proj']; }
+async function renderFoundSections(level) {
+  const secs = levelsFor(level), nav = document.getElementById('found-nav'); nav.style.display = 'flex';
+  if (!foundActiveSection || !secs.includes(foundActiveSection)) foundActiveSection = secs[secs.length - 1];
+  nav.innerHTML = secs.map(s => `<button class="found-nav-btn${foundActiveSection===s?' active':''}" onclick="selectFoundSec('${s}')">${FOUND_SECTIONS[s].label}</button>`).join('');
+  await selectFoundSec(foundActiveSection);
 }
-
-async function renderFoundationsSections(level) {
-  const sections = getSectionsForLevel(level);
-  const nav = document.getElementById('found-nav');
-  nav.style.display = 'flex';
-  nav.innerHTML = sections.map(s =>
-    `<button class="found-nav-btn${foundActiveSection === s ? ' active' : ''}" onclick="selectFoundSection('${s}')">${FOUND_SECTIONS[s].label}</button>`
-  ).join('');
-  if (!foundActiveSection || !sections.includes(foundActiveSection)) {
-    foundActiveSection = sections[sections.length - 1]; // default to deepest
-    nav.innerHTML = sections.map(s =>
-      `<button class="found-nav-btn${foundActiveSection === s ? ' active' : ''}" onclick="selectFoundSection('${s}')">${FOUND_SECTIONS[s].label}</button>`
-    ).join('');
-  }
-  await selectFoundSection(foundActiveSection);
+async function selectFoundSec(key) {
+  foundActiveSection = key;
+  document.querySelectorAll('.found-nav-btn').forEach(b => b.classList.toggle('active', b.textContent === FOUND_SECTIONS[key].label));
+  const sec = FOUND_SECTIONS[key], {org,prod,proj} = foundCtx;
+  const bp = key==='org' ? sec.path(org) : key==='proj' ? sec.path(org,prod,proj) : sec.path(org,prod);
+  const ct = document.getElementById('found-content');
+  ct.innerHTML = '<div class="found-nav" style="margin-bottom:20px">' + sec.files.map((f,i) =>
+    `<button class="found-nav-btn${i===0?' active':''}" onclick="loadFoundFile('${bp}${f.s}.md',this)">${f.l}</button>`).join('') + '</div><div id="found-file-content"></div>';
+  await loadFoundFile(bp + sec.files[0].s + '.md', ct.querySelector('.found-nav-btn'));
 }
-
-async function selectFoundSection(sectionKey) {
-  foundActiveSection = sectionKey;
-  // update nav active state
-  document.querySelectorAll('.found-nav-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent === FOUND_SECTIONS[sectionKey].label);
-  });
-  const sec = FOUND_SECTIONS[sectionKey];
-  const { org, prod, proj } = foundCtx;
-  let basePath;
-  if (sectionKey === 'org') basePath = sec.path(org);
-  else if (sectionKey === 'proj') basePath = sec.path(org, prod, proj);
-  else basePath = sec.path(org, prod);
-
-  const content = document.getElementById('found-content');
-  content.innerHTML = '<p style="color:var(--muted)">Carregando...</p>';
-
-  // render file tabs and first file
-  let html = '<div class="found-nav" style="margin-bottom:20px">';
-  html += sec.files.map((f, i) =>
-    `<button class="found-nav-btn${i === 0 ? ' active' : ''}" onclick="loadFoundFile('${basePath}${f.slug}.md', this)">${f.label}</button>`
-  ).join('');
-  html += '</div><div id="found-file-content"></div>';
-  content.innerHTML = html;
-
-  // load first file
-  await loadFoundFile(basePath + sec.files[0].slug + '.md', content.querySelector('.found-nav-btn'));
-}
-
 async function loadFoundFile(path, btn) {
-  // update active button
-  if (btn) {
-    btn.parentElement.querySelectorAll('.found-nav-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-  const target = document.getElementById('found-file-content');
-  target.innerHTML = '<p style="color:var(--muted)">Carregando...</p>';
-
-  const result = await fetchMd(path);
-  if (!result) {
-    target.innerHTML = `<div class="md-error">Arquivo não encontrado: <code>${path}</code><br><small>Verifique se o arquivo existe no repositório.</small></div>`;
-    return;
-  }
-
-  const { meta, body } = result;
+  if (btn) btn.parentElement.querySelectorAll('.found-nav-btn').forEach(b => b.classList.remove('active')), btn.classList.add('active');
+  const t = document.getElementById('found-file-content'); t.innerHTML = '<p style="color:var(--muted)">Carregando...</p>';
+  const r = await fetchMd(path);
+  if (!r) { t.innerHTML = `<div class="md-error">Arquivo não encontrado: <code>${path}</code><br><small>Verifique se o arquivo existe no repositório e se há um arquivo <code>.nojekyll</code> na raiz.</small></div>`; return; }
   let html = '';
-  if (Object.keys(meta).length > 0) {
-    html += '<div class="md-meta">';
-    Object.entries(meta).forEach(([k, v]) => {
-      if (v) html += `<span><strong>${k}:</strong> ${v}</span>`;
-    });
-    html += '</div>';
-  }
-  if (body) {
-    html += '<div class="md-body">' + mdToHtml(body) + '</div>';
-  } else {
-    html += '<div class="md-empty">Este foundation ainda não foi preenchido.</div>';
-  }
-  target.innerHTML = html;
+  if (Object.keys(r.meta).length) { html += '<div class="md-meta">'; Object.entries(r.meta).forEach(([k,v]) => { if(v) html += `<span><strong>${k}:</strong> ${v}</span>`; }); html += '</div>'; }
+  html += r.body ? '<div class="md-body">' + mdToHtml(r.body) + '</div>' : '<div class="md-empty">Este foundation ainda não foi preenchido.</div>';
+  t.innerHTML = html;
 }
 
-/* boot */
-loadBlurbs(); renderFilters(); renderCatalog(); renderWizard(); renderProcesses(); renderRE(); loadEstimates(); loadAllAtoms();
+loadBlurbs(); renderFilters(); renderCatalog(); renderWizard(); renderProcesses(); loadEstimates(); renderRE(); syncAll();
 </script>
 </body>
 </html>
