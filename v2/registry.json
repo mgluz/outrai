@@ -1,0 +1,30 @@
+{
+  "version": "2.0",
+  "spreadsheet": {
+    "url": "https://docs.google.com/spreadsheets/d/19_scUsjHcdQx5CJw0SwTz3rUB45w6kuiT5gzhfaQOqM",
+    "abas": {
+      "processos": "gid=0",
+      "tipos": "gid=421600511",
+      "reqs_evals": "gid=421600511"
+    }
+  },
+  "organizacoes": {
+    "exemplo-org": {
+      "nome": "Exemplo Organização",
+      "produtos": {
+        "exemplo-produto": {
+          "nome": "Portal de Gestão",
+          "tipo": "Web App",
+          "projetos": {
+            "redesign-onboarding": {
+              "nome": "Redesign do Onboarding",
+              "tipo_projeto": "C3",
+              "status": "em_andamento",
+              "criado_em": "2025-07-14"
+            }
+          }
+        }
+      }
+    }
+  }
+}
